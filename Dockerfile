@@ -10,18 +10,26 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
 # ----------------------------------------------------------
-# Install Python 3.12 and essential build tools
+# Install Python 3.12 (system), but install pip only inside venv
 # ----------------------------------------------------------
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget curl git gnupg2 ca-certificates unzip zip \
     build-essential software-properties-common pkg-config \
-    libffi-dev libssl-dev && \
-    add-apt-repository ppa:deadsnakes/ppa -y && \
-    apt-get update && apt-get install -y \
-    python3.12 python3.12-venv python3.12-dev python3.12-distutils && \
+    libffi-dev libssl-dev zlib1g-dev libjpeg-dev libpng-dev \
+    python3.12 python3.12-venv python3.12-dev && \
     ln -sf /usr/bin/python3.12 /usr/bin/python3 && \
-    curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12 && \
     rm -rf /var/lib/apt/lists/*
+
+# ----------------------------------------------------------
+# Create isolated Python 3.12 virtual environment (PEP 668-safe)
+# ----------------------------------------------------------
+RUN python3.12 -m venv /opt/tf && \
+    /opt/tf/bin/python -m ensurepip && \
+    /opt/tf/bin/pip install --upgrade pip setuptools wheel numpy
+
+ENV PATH=/opt/tf/bin:${PATH}
+ENV PYTHON_BIN_PATH=/opt/tf/bin/python
+ENV PYTHON_LIB_PATH=/opt/tf/lib/python3.12/site-packages
 
 # ----------------------------------------------------------
 # Install CUDA Toolkit 12.9.1
@@ -69,19 +77,8 @@ ENV CC=/usr/lib/llvm-20/bin/clang
 ENV CXX=/usr/lib/llvm-20/bin/clang++
 
 # ----------------------------------------------------------
-# Create Python 3.12 virtual environment
+# Clone TensorFlow and configure build
 # ----------------------------------------------------------
-RUN python3.12 -m venv /opt/tf && \
-    . /opt/tf/bin/activate && \
-    pip install -U pip setuptools wheel numpy
-
-ENV PATH=/opt/tf/bin:${PATH}
-ENV PYTHON_BIN_PATH=/opt/tf/bin/python3
-ENV PYTHON_LIB_PATH=/opt/tf/lib/python3.12/site-packages
-
-# # ----------------------------------------------------------
-# # Clone TensorFlow and configure build
-# # ----------------------------------------------------------
 WORKDIR /workspace
 RUN git clone https://github.com/tensorflow/tensorflow.git && cd tensorflow && git checkout r2.20
 
