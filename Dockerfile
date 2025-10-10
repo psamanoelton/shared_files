@@ -40,15 +40,17 @@ RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86
     dpkg -i cuda-repo-ubuntu2404-12-9-local_12.9.1-575.57.08-1_amd64.deb && \
     cp /var/cuda-repo-ubuntu2404-12-9-local/cuda-*-keyring.gpg /usr/share/keyrings/ && \
     apt-get update && apt-get install -y cuda-toolkit-12-9 && \
-    rm -rf /var/lib/apt/lists/*
-ENV PATH=/usr/local/cuda/bin:${PATH}
-ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
+    rm -rf /var/lib/apt/lists/* && \
+    export PATH=/usr/local/cuda/bin:${PATH} && \
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
+# ENV PATH=/usr/local/cuda/bin:${PATH}
+# ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
 
 # # ----------------------------------------------------------
 # # Install NVIDIA Open Driver (optional for inside-container testing)
 # # (In production, rely on host driver + --gpus all)
 # # ----------------------------------------------------------
-RUN apt-get update && apt-get install -y nvidia-open-driver && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y nvidia-open && rm -rf /var/lib/apt/lists/*
 
 # # ----------------------------------------------------------
 # # Install cuDNN 9.8.0
@@ -69,6 +71,15 @@ RUN apt-get update && apt-get install -y g++ unzip && \
     rm bazel-6.5.0-installer-linux-x86_64.sh && \
     rm -rf /var/lib/apt/lists/*
 
+# ----------------------------------------------------------
+# Install Bazel 7.4.1 (for TensorFlow 2.20)
+# ----------------------------------------------------------
+RUN apt-get update && apt-get install -y g++ unzip && \
+    wget https://github.com/bazelbuild/bazel/releases/download/7.4.1/bazel-7.4.1-installer-linux-x86_64.sh && \
+    chmod +x bazel-7.4.1-installer-linux-x86_64.sh && ./bazel-7.4.1-installer-linux-x86_64.sh && \
+    rm bazel-7.4.1-installer-linux-x86_64.sh && \
+    rm -rf /var/lib/apt/lists/*
+
 # # ----------------------------------------------------------
 # # Install LLVM 20
 # # ----------------------------------------------------------
@@ -84,47 +95,75 @@ RUN git clone https://github.com/tensorflow/tensorflow.git && cd tensorflow && g
 
 WORKDIR /workspace/tensorflow
 
-# # Create .tf_configure.bazelrc for compute capability 12.0
-# RUN echo 'build --action_env PYTHON_BIN_PATH="/opt/tf/bin/python3"' > .tf_configure.bazelrc && \
-#     echo 'build --action_env PYTHON_LIB_PATH="/opt/tf/lib/python3.12/site-packages"' >> .tf_configure.bazelrc && \
-#     echo 'build --python_path="/opt/tf/bin/python3"' >> .tf_configure.bazelrc && \
-#     echo 'build:cuda --repo_env HERMETIC_CUDA_VERSION="12.9"' >> .tf_configure.bazelrc && \
-#     echo 'build:cuda --repo_env HERMETIC_CUDNN_VERSION="9.8"' >> .tf_configure.bazelrc && \
-#     echo 'build:cuda --repo_env HERMETIC_CUDA_COMPUTE_CAPABILITIES="12.0"' >> .tf_configure.bazelrc && \
-#     echo 'build:cuda --repo_env LOCAL_CUDA_PATH="/usr/local/cuda/lib64"' >> .tf_configure.bazelrc && \
-#     echo 'build --config=cuda_clang' >> .tf_configure.bazelrc && \
-#     echo 'build --action_env CLANG_CUDA_COMPILER_PATH="/usr/lib/llvm-20/bin/clang"' >> .tf_configure.bazelrc && \
-#     echo 'build:opt --copt=-Wno-sign-compare' >> .tf_configure.bazelrc && \
-#     echo 'build:opt --host_copt=-Wno-sign-compare' >> .tf_configure.bazelrc
+# ----------------------------------------------------------
+# Define all TensorFlow build environment vars (skip ./configure)
+# ----------------------------------------------------------
+# ENV TF_NEED_CUDA=1
+# ENV TF_CUDA_VERSION=12.9
+# ENV TF_CUDNN_VERSION=9.8
+# ENV HERMETIC_CUDA_VERSION=12.9
+# ENV HERMETIC_CUDNN_VERSION=9.8
+# ENV TF_CUDA_COMPUTE_CAPABILITIES=12.0
+# ENV HERMETIC_PYTHON_VERSION=3.12
+# ENV TF_CUDA_PATHS=/usr/local/cuda,/usr/lib/x86_64-linux-gnu
+# ENV TF_CUDA_CLANG=1
+# ENV TF_ENABLE_XLA=1
+# ENV LOCAL_CUDA_PATH=/usr/local/cuda
+# ENV GCC_HOST_COMPILER_PATH=/usr/lib/llvm-20/bin/clang
+# ENV CLANG_CUDA_COMPILER_PATH=/usr/lib/llvm-20/bin/clang
 
-# # Configure TensorFlow
-# RUN yes "" | ./configure
+# export TF_NEED_CUDA=1
+# export TF_CUDA_VERSION=12.9
+# export TF_CUDNN_VERSION=9.8.0
+# export HERMETIC_CUDA_VERSION=12.8.1
+# export HERMETIC_CUDNN_VERSION=9.8
+# export TF_CUDA_COMPUTE_CAPABILITIES=12.0
+# export HERMETIC_PYTHON_VERSION=3.12
+# export TF_CUDA_PATHS=/usr/local/cuda,/usr/lib/x86_64-linux-gnu
+# export TF_CUDA_CLANG=1
+# export TF_ENABLE_XLA=1
+# export LOCAL_CUDA_PATH=/usr/local/cuda
+# export GCC_HOST_COMPILER_PATH=/usr/lib/llvm-20/bin/clang
+# export CLANG_CUDA_COMPILER_PATH=/usr/lib/llvm-20/bin/clang
 
-# # ----------------------------------------------------------
-# # Build TensorFlow wheel
-# # ----------------------------------------------------------
-# RUN bazel build //tensorflow/tools/pip_package:build_pip_package \
-#     --repo_env=USE_PYWRAP_RULES=1 \
-#     --config=cuda --config=cuda_clang \
-#     --jobs=8
+# # sed -i 's/12\.9/12.8.1/g' /workspace/tensorflow/.tf_configure.bazelrc
+# # grep HERMETIC_CUDA_VERSION /workspace/tensorflow/.tf_configure.bazelrc
+# # --repo_env HERMETIC_CUDA_VERSION=12.8.1
 
-# # Build the pip wheel
-# RUN ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && \
-#     pip install /tmp/tensorflow_pkg/tensorflow-*.whl
 
-# # ----------------------------------------------------------
-# # Test TensorFlow GPU availability
-# # ----------------------------------------------------------
-# RUN python3 -c "import tensorflow as tf; print('Num GPUs available:', len(tf.config.list_physical_devices('GPU'))); print('TF built with CUDA:', tf.test.is_built_with_cuda())"
+# # # ----------------------------------------------------------
+# # # Build TensorFlow wheel
+# # # ----------------------------------------------------------
+# bazel build //tensorflow/tools/pip_package:wheel \
+#   --repo_env=USE_PYWRAP_RULES=1 \
+#   --repo_env=WHEEL_NAME=tensorflow \
+#   --config=cuda --config=cuda_clang
 
-CMD ["/bin/bash"]
+# # # Build the pip wheel
+# # RUN ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && \
+# #     pip install /tmp/tensorflow_pkg/tensorflow-*.whl
 
-# To build this image, run:
-#    docker build -t tf220 .
+# # # ----------------------------------------------------------
+# # # Test TensorFlow GPU availability
+# # # ----------------------------------------------------------
+# # RUN python3 -c "import tensorflow as tf; print('Num GPUs available:', len(tf.config.list_physical_devices('GPU'))); print('TF built with CUDA:', tf.test.is_built_with_cuda())"
 
-# To run this image, run:
-#   docker run -it --name tf220 tf220
+# CMD ["/bin/bash"]
 
-# To remove the image, run:
-#   docker rm -f tf220
+# # To build this image, run:
+# #    docker build -t tf220 .
+# #    docker build -t tf220 . > build_tf220.log 2>&1
 
+# # LOGFILE="build_$(date +'%Y%m%d_%H%M%S').log"
+# # docker build -t tf220 . 2>&1 | tee "$LOGFILE"
+
+
+# # To run this image, run:
+# #   docker run -it  tf220
+
+# # To remove the image, run:
+# #   docker rm -f tf220
+
+# # 1f4ee8bcd86b7333e9a98f666d70309fc7c8907a
+
+# bazel build //tensorflow/tools/pip_package:wheel --repo_env=USE_PYWRAP_RULES=1 --repo_env=WHEEL_NAME=tensorflow --config=cuda --config=cuda_wheel
