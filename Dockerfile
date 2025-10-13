@@ -66,3 +66,18 @@ ENV TF_NEED_CUDA=1 \
 RUN yes "" | ./configure
 
 CMD ["/bin/bash"]
+
+
+# one-off build that will JIT at runtime on the RTX Pro 6000:
+# bazel clean --expunge
+# bazel build //tensorflow/tools/pip_package:wheel \
+#   --config=opt \
+#   --config=cuda \
+#   --config=cuda_clang \
+#   --@local_config_cuda//cuda:override_include_cuda_libs=true \
+#   --repo_env=HERMETIC_CUDA_VERSION=12.8.1 \
+#   --repo_env=HERMETIC_CUDNN_VERSION=9.8.0 \
+#   --repo_env=HERMETIC_CUDA_COMPUTE_CAPABILITIES=compute_90 \
+#   --repo_env=HERMETIC_PYTHON_VERSION=3.12 \
+#   --linkopt=-fuse-ld=lld \
+#   --verbose_failures
