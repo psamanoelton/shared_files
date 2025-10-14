@@ -46,7 +46,7 @@ RUN python3 -m pip install -U pip setuptools wheel numpy
 # TensorFlow 2.20
 WORKDIR /workspace
 RUN git clone https://github.com/tensorflow/tensorflow.git && \
-    cd tensorflow && git checkout v2.20.0
+    cd tensorflow && git checkout 735467e89ccfd7ace190363412bb5698164628b5
 WORKDIR /workspace/tensorflow
 
 # Configure for CUDA + CC 12.0 (sm_120) and hermetic CUDA 12.8.1 + cuDNN 9.8
@@ -68,16 +68,30 @@ RUN yes "" | ./configure
 CMD ["/bin/bash"]
 
 
-# one-off build that will JIT at runtime on the RTX Pro 6000:
+
+# # Remove any forced cuda_clang settings
+# sed -i '/--config=cuda_clang/d; /CLANG_CUDA_COMPILER_PATH/d' .tf_configure.bazelrc
+
+# # Sanity check: this should print nothing (OK)
+# grep -nE 'cuda_clang|CLANG_CUDA_COMPILER_PATH' .tf_configure.bazelrc || echo "OK: no cuda_clang in .tf_configure.bazelrc"
+
+# ln -sf /usr/local/cuda/targets/x86_64-linux/lib/stubs/libcuda.so \
+#        /usr/local/cuda/targets/x86_64-linux/lib/stubs/libcuda.so.1
+
+# export LD_LIBRARY_PATH=/usr/local/cuda/targets/x86_64-linux/lib/stubs:/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+
 # bazel clean --expunge
+
 # bazel build //tensorflow/tools/pip_package:wheel \
 #   --config=opt \
 #   --config=cuda \
-#   --config=cuda_clang \
+#   --@local_config_cuda//:cuda_compiler=nvcc \
 #   --@local_config_cuda//cuda:override_include_cuda_libs=true \
 #   --repo_env=HERMETIC_CUDA_VERSION=12.8.1 \
 #   --repo_env=HERMETIC_CUDNN_VERSION=9.8.0 \
-#   --repo_env=HERMETIC_CUDA_COMPUTE_CAPABILITIES=compute_90 \
+#   --repo_env=HERMETIC_CUDA_COMPUTE_CAPABILITIES=compute_120 \
 #   --repo_env=HERMETIC_PYTHON_VERSION=3.12 \
-#   --linkopt=-fuse-ld=lld \
+#   --action_env=LD_LIBRARY_PATH \
 #   --verbose_failures
+
