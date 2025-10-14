@@ -138,10 +138,10 @@ WORKDIR /workspace/tensorflow
 # # # ----------------------------------------------------------
 # # # Build TensorFlow wheel
 # # # ----------------------------------------------------------
-bazel build //tensorflow/tools/pip_package:wheel \
-  --repo_env=USE_PYWRAP_RULES=1 \
-  --repo_env=WHEEL_NAME=tensorflow \
-  --config=cuda --config=cuda_wheel
+# bazel build //tensorflow/tools/pip_package:wheel \
+#   --repo_env=USE_PYWRAP_RULES=1 \
+#   --repo_env=WHEEL_NAME=tensorflow \
+#   --config=cuda --config=cuda_wheel
 
 # # # Build the pip wheel
 # # RUN ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && \
@@ -156,17 +156,15 @@ bazel build //tensorflow/tools/pip_package:wheel \
 
 # # To build this image, run:
 # #    docker build -t tf220 .
-# #    docker build -t tf220 . > build_tf220.log 2>&1
-
-# # LOGFILE="build_$(date +'%Y%m%d_%H%M%S').log"
-# # docker build -t tf220 . 2>&1 | tee "$LOGFILE"
-
 
 # # To run this image, run:
 # #   docker run -it tf220
 
 # # To remove the image, run:
 # #   docker rm -f tf220
+
+# Re open the image
+# #  docker exec -it 31d988b5cb64 /bin/bash
 
 # # 1f4ee8bcd86b7333e9a98f666d70309fc7c8907a
 

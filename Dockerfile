@@ -113,3 +113,63 @@ CMD ["/bin/bash"]
 # Wheel ends up at:
 #   bazel-bin/tensorflow/tools/pip_package/wheel_house/tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl
 # -------------------------------------------------------------------
+
+
+# # To build this image, run:
+# #    docker build -t tf220 .
+
+# # To run this image, run:
+# #   docker run -it tf220
+
+# # To remove the image, run:
+# #   docker rm -f tf220
+
+# Re open the image
+# #  docker exec -it 31d988b5cb64 /bin/bash
+
+# conda create -y -n tf312 python=3.12
+# conda activate tf312
+
+# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl" 0d2f15258eb4:/workspace/tensorflow/bazel-bin/tensorflow/tools/pip_package/wheel_house/
+# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl-0.params" 0d2f15258eb4:/workspace/tensorflow/bazel-bin/tensorflow/tools/pip_package/wheel_house/
+
+
+
+# pip install bazel-bin/tensorflow/tools/pip_package/wheel_house/tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl
+
+# python -c "import tensorflow as tf; print(tf.__version__)"
+
+
+# # 1) Match the redists TF linked against
+# pip install --no-cache-dir \
+#   "nvidia-cudnn-cu12==9.8.0.87" \
+#   "nvidia-nvshmem-cu12==3.2.5" \
+#   "nvidia-nccl-cu12==2.27.7"
+
+# # 2) Pointers to their lib dirs
+# export CUDNN_LIB_DIR="$CONDA_PREFIX/lib/python3.12/site-packages/nvidia/cudnn/lib"
+# export NVSHMEM_LIB_DIR="$CONDA_PREFIX/lib/python3.12/site-packages/nvidia/nvshmem/lib"
+# export NCCL_LIB_DIR="$CONDA_PREFIX/lib/python3.12/site-packages/nvidia/nccl/lib"
+
+# # 3) NVSHMEM soname fallback (some wheels only ship libnvshmem.so)
+# [ -f "$NVSHMEM_LIB_DIR/libnvshmem.so.3" ] || \
+#   { [ -f "$NVSHMEM_LIB_DIR/libnvshmem.so" ] && ln -s "$NVSHMEM_LIB_DIR/libnvshmem.so" "$NVSHMEM_LIB_DIR/libnvshmem.so.3" || true; }
+
+# # 4) Put CUDA stub first so import works on hosts without a driver
+# ln -sf /usr/local/cuda/targets/x86_64-linux/lib/stubs/libcuda.so \
+#       /usr/local/cuda/targets/x86_64-linux/lib/stubs/libcuda.so.1 2>/dev/null || true
+
+# export LD_LIBRARY_PATH="/usr/local/cuda/targets/x86_64-linux/lib/stubs:$CUDNN_LIB_DIR:$NVSHMEM_LIB_DIR:$NCCL_LIB_DIR:/usr/local/cuda/lib64"
+
+# # 5) Sanity test (optional)
+# python - <<'PY'
+# import ctypes, os
+# print("LD_LIBRARY_PATH=", os.environ.get("LD_LIBRARY_PATH",""))
+# for lib in ["libcuda.so.1","libcudnn.so.9","libcudnn_engines_precompiled.so.9","libnvshmem_host.so.3","libnvshmem.so.3","libnccl.so.2"]:
+#     ctypes.CDLL(lib)
+# print("All GPU redists preloaded OK")
+# PY
+
+# # 6) TensorFlow import test (on a no-GPU host you’ll see UNKNOWN ERROR(34); that’s fine)
+# python -c "import tensorflow as tf; print('TF', tf.__version__); print('GPUs:', tf.config.list_physical_devices('GPU'))"
+
