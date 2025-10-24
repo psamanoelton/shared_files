@@ -1,1 +1,95 @@
-Sample.txt
+from datetime import date
+
+content = f"""# TensorFlow Quantum Compatibility Update Plan
+# Date: {date.today().isoformat()}
+
+## Objective
+Prepare TensorFlow Quantum (TFQ) to work with the latest stable stack:
+- TensorFlow 2.20.0
+- NumPy 2.3.4
+- Cirq 1.6.1
+- Python 3.11
+
+---
+
+## 1. Current Compatibility Situation
+TFQ 0.7.3 officially supports TensorFlow 2.15.x, NumPy 1.x, and Cirq 1.3.x.
+To align with the latest TensorFlow 2.20, we analyzed dependency trees for TensorFlow 2.20 and Cirq 1.6.1.
+
+### ✅ Verified environment targets
+- Python: 3.11
+- TensorFlow: 2.20.0
+- NumPy: 2.3.4
+- Cirq: 1.6.1
+
+---
+
+## 2. Key Observations
+### Shared Dependencies (Identical Versions)
+- numpy==2.3.4
+- grpcio==1.76.0
+- six==1.17.0
+- packaging==25.0
+- pillow==12.0.0
+- typing-extensions==4.15.0
+- requests==2.32.5
+- urllib3==2.5.0
+- certifi==2025.10.5
+- charset-normalizer==3.4.4
+- idna==3.11
+- h5py==3.15.1
+- sympy==1.14.0
+- scipy==1.16.2
+- networkx==3.5
+
+### Main Conflict
+- **protobuf**
+  - TensorFlow 2.20 uses `protobuf==6.33.0`
+  - Cirq 1.6.1 uses `protobuf==5.29.5`
+  - ✅ Solution: use `protobuf==5.29.5` (>=5.28.0, compatible with TensorFlow).
+
+---
+
+## 3. Recommended Unified Environment (TFQ Build Target)
+
+tensorflow==2.20.0
+keras==3.11.3
+tensorboard==2.20.0
+ml_dtypes==0.5.3
+cirq==1.6.1
+duet==0.2.9
+numpy==2.3.4
+protobuf==5.29.5
+grpcio==1.76.0
+networkx==3.5
+sympy==1.14.0
+scipy==1.16.2
+h5py==3.15.1
+pandas==2.3.3
+matplotlib==3.10.7
+absl-py==2.3.1
+packaging==25.0
+requests==2.32.5
+typing-extensions==4.15.0
+termcolor==3.1.0
+wrapt==2.0.0
+
+---
+
+## 4. Validation Steps
+
+### Step 1. Create clean environment
+```bash
+python3.11 -m venv tfq_env
+source tfq_env/bin/activate
+pip install -r tfq_compat_env.txt
+pip check
+
+#
+import tensorflow as tf
+import cirq, numpy
+print(tf.__version__, cirq.__version__, numpy.__version__)
+
+Output:
+2.20.0 1.6.1 2.3.4
+

@@ -125,14 +125,14 @@ CMD ["/bin/bash"]
 # #   docker rm -f tf220
 
 # Re open the image
-# #  docker exec -it 31d988b5cb64 /bin/bash
+# #  docker exec -it 0d2f15258eb4 /bin/bash
 
 # conda create -y -n tf312 python=3.12
 # conda activate tf312
 
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl" 0d2f15258eb4:/workspace/tensorflow/bazel-bin/tensorflow/tools/pip_package/wheel_house/
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl-0.params" 0d2f15258eb4:/workspace/tensorflow/bazel-bin/tensorflow/tools/pip_package/wheel_house/
-
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl" 0d2f15258eb4:/workspace
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl-0.params" 0d2f15258eb4:/workspace
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\shared_files\check.py" 0d2f15258eb4:/workspace
 
 
 # pip install bazel-bin/tensorflow/tools/pip_package/wheel_house/tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl
@@ -172,4 +172,60 @@ CMD ["/bin/bash"]
 
 # # 6) TensorFlow import test (on a no-GPU host you’ll see UNKNOWN ERROR(34); that’s fine)
 # python -c "import tensorflow as tf; print('TF', tf.__version__); print('GPUs:', tf.config.list_physical_devices('GPU'))"
+
+
+git clone https://github.com/tensorflow/text.git
+cd text
+git checkout test_818668082
+
+mkdir /github
+
+export IS_NIGHTLY=nightly
+export TF_VERSION=grc.io/tensorflow-sigs/build-arm64:tf-latest-multi-python
+
+./oss_scripts/run_build.sh
+
+pip install tensorflow_text_nightly-*.whl
+
+#### Extra packages ####
+pip install tensorflow-metadata
+pip install tensorflow-io
+
+# Bazel for this "old" packages
+apt update && apt install bazel-6.5.0
+
+pip install pyarrow apache-beam
+
+# tfx-bsl
+git clone https://github.com/tensorflow/tfx-bsl.git
+cd tfx-bsl
+pip install . --no-deps -v
+cd ..
+
+# tf 2 onnix
+git clone https://github.com/tensorflow/tensorflow-onnx.git
+cd tensorflow-onnx
+pip install . --no-deps -v
+pip install onnx
+cd ..
+
+# tfdv
+git clone https://github.com/tensorflow/data-validation.git
+cd data-validation
+# Modify needed numpy version
+sed -i 's/"numpy~=1.22.0"/"numpy>=1.26"/' pyproject.toml
+pip install . --no-deps -v
+pip install pyfarmhash
+pip install IPython
+pip install joblib
+pip install pandas
+cd ..
+
+# tf transform
+git clone https://github.com/tensorflow/transform.git
+cd transform
+pip install . --no-deps -v
+pip install tf_keras
+cd ..
+
 
