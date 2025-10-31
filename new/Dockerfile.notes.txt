@@ -1,0 +1,18 @@
+# Dockerfile fixes / notes (for your provided template)
+# 1) The conda env name mismatch:
+#    You created env 'tf311' but later echo 'tf312' in .bashrc; fix to 'tf311'.
+# 2) Prefer system Python only for bootstrapping; the build uses the venv created by build_tfq.sh.
+# 3) Ensure Bazelisk is on PATH as 'bazel' (already done).
+# 4) CUDA 12.8.1 image is fine; TF 2.20 uses CUDA 12.x toolchain. No need to set CLANG_CUDA_COMPILER_PATH.
+# 5) Add build essentials already present; if you need cmake for other tooling, apt-get install cmake.
+
+# Example snippet to fix the env name:
+# RUN conda create -y -n tf311 python=3.11 && \
+
+#     echo "source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tf311" >> /root/.bashrc
+
+# Recommended runtime command inside the container:
+#   source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tf311
+#   git clone https://github.com/tensorflow/quantum.git && cd quantum
+#   # Drop in the three helper files (tfq_env_requirements.txt, build_tfq.sh, repo_requirements_patch.txt)
+#   bash build_tfq.sh

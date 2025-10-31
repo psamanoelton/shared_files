@@ -1,0 +1,41 @@
+FROM ubuntu:22.04
+SHELL ["/bin/bash", "-lc"]
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    python3.11 python3.11-dev python3.11-venv python3-pip \
+    build-essential git curl unzip zip pkg-config g++ zlib1g-dev \
+    clang lld && rm -rf /var/lib/apt/lists/*
+
+# Bazelisk
+RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-amd64 \
+      -o /usr/local/bin/bazel && chmod +x /usr/local/bin/bazel
+
+WORKDIR /workspace
+RUN python3.11 -m venv .venv && . .venv/bin/activate && \
+    python -m pip install --upgrade pip wheel setuptools && \
+    pip install "protobuf==5.29.5" && \
+    pip install "tensorflow==2.20.0" "numpy==2.3.4" \
+               "scipy==1.16.2" "networkx==3.5" "sympy==1.14.0" \
+               "h5py==3.15.1" "packaging==25.0" "typing-extensions==4.15.0" \
+               "requests==2.32.5" "urllib3==2.5.0" "certifi==2025.10.5" \
+               "charset-normalizer==3.4.4" "idna==3.11" && \
+    pip install "cirq-core==1.6.1" "cirq-google==1.6.1"
+
+WORKDIR /workspace
+
+CMD ["/bin/bash"]
+
+# docker build -t tfqn -f Dockerfilenew .
+# docker run -it tfqn
+
+# source .venv/bin/activate
+
+
+$src = "C:\Users\Pablo Samano\Desktop\Rivian\google"   # change to your path
+docker run --rm -it --name tfq --mount type=bind,source="$src",target=/workspace tfqn /bin/bash
+
+
+
+
+
