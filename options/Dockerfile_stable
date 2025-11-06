@@ -1,0 +1,65 @@
+FROM ubuntu:22.04
+SHELL ["/bin/bash","-lc"]
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Base toolchain
+RUN apt-get update && apt-get install -y \
+    python3.11 python3.11-dev python3.11-venv python3-pip \
+    build-essential git curl unzip zip pkg-config zlib1g-dev \
+    clang lld && rm -rf /var/lib/apt/lists/*
+
+# Bazelisk (lets .bazelversion drive Bazel 6.5.0)
+RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-amd64 \
+      -o /usr/local/bin/bazel && chmod +x /usr/local/bin/bazel
+
+WORKDIR /workspace
+RUN python3.11 -m venv .venv && . .venv/bin/activate && \
+    python -m pip install --upgrade pip wheel setuptools && \
+    # Pin the safe dependency set for TF 2.16:
+    # pip install "tensorflow==2.16.2" "numpy>=1.26.4,<2.0" "protobuf>=4.25,<5.0" && \
+    # pip install "cirq-core==1.3.*" "cirq-google==1.3.*"
+
+# Copy TFQ repo into /workspace/quantum (or docker cp later)
+# COPY quantum /workspace/quantum
+
+WORKDIR /workspace
+CMD ["/bin/bash"]
+
+# docker build -t tfqn -f Dockerfilenew .
+# docker run -it tfqn
+# docker exec -it a05debad652a /bin/bash
+
+# source .venv/bin/activate
+
+# pip install -r requirements.txt
+./configure.sh
+bazel build -c opt --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" release:build_pip_package
+bazel-bin/release/build_pip_package /tmp/tfquantum/
+python3 -m pip install /tmp/tfquantum/name_of_generated_wheel.whl
+
+# $src = "C:\Users\Pablo Samano\Desktop\Rivian\google"   # change to your path
+# docker run --rm -it --name tfq --mount type=bind,source="$src",target=/workspace tfqn /bin/bash
+
+
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum\WORKSPACE" a05debad652a:/workspace/quantum
+
+
+sed -i 's/\r$//' bazel-bin/release/build_pip_package
+bazel-bin/release/build_pip_package /tmp/tfquantum
+pip install /tmp/tfquantum/*.whl
+
+cd /workspace
+python - <<'PY'
+import tensorflow as tf, tensorflow_quantum as tfq, cirq, numpy as np, google.protobuf as gp, sympy
+print("TF:", tf.__version__)
+print("TFQ:", tfq.__version__)
+print("Cirq:", cirq.__version__)
+print("NumPy:", np.__version__)
+print("Protobuf:", gp.__version__)
+print("sympy:", sympy.__version__)
+print("tfq from:", tfq.__file__)
+PY
+
+sed -i 's/\r$//' scripts/test_all.sh
+./scripts/test_all.sh
+
