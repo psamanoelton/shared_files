@@ -89,7 +89,7 @@ CMD ["/bin/bash"]
 
 # docker build -t tfq-tf:latest .
 # docker run -it tfq-tf:latest
-# docker exec -it ea2ae16ac6f4 /bin/bash
+# docker exec -it f719201a63fb /bin/bash
 
 # docker system prune -a -f
 
@@ -210,12 +210,27 @@ CMD ["/bin/bash"]
 # print("Sympy:", sympy.__version__)
 # PY
 
+conda activate tfq
 cd quantum
 ./scripts/test_all.sh
 ./scripts/ci_validate_tutorials.sh
 
-# 2) Nuke stale external repos and analysis cache
-rm -rf "$(bazel info output_base)"/external/local_config_python \
-       "$(bazel info output_base)"/external/local_execution_config_python \
-       "$(bazel info output_base)"/external/python \
-       "$(bazel info output_base)"/external/local_config_tf 2>/dev/null || true
+rm scripts/test_tutorials.py
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\scripts\test_tutorials.py" f719201a63fb:/workspace/quantum/scripts/test_tutorials.py
+
+rm scripts/ci_validate_tutorials.sh
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\scripts\ci_validate_tutorials.sh" f719201a63fb:/workspace/quantum/scripts/ci_validate_tutorials.sh
+
+sed -i 's/\r$//' /workspace/quantum/scripts/ci_validate_tutorials.sh
+
+
+TFQ_TUTORIALS_ONLY=quantum/docs/tutorials/quantum_reinforcement_learning.ipynb \
+NBCLIENT_TIMEOUT=1800 \
+./scripts/ci_validate_tutorials.sh
+
+rm release/setup.py
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\release\setup.py" f719201a63fb:/workspace/quantum/release/setup.py
+
+C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\release\setup.py
+
+pylint -v scripts/test_tutorials.py tensorflow_quantum/__init__.py |& tee ./pylint.out
