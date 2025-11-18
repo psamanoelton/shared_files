@@ -45,7 +45,7 @@ RUN wget -O /tmp/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-lat
     conda clean -a -y
 
 # Create the Python 3.12 env for runtime/tests and auto-activate it on login
-RUN conda create -y -n tf312 python=3.12 && \
+RUN conda create -y -n tfq python=3.11 && \
     echo "source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tf312" >> /root/.bashrc
 
 # Make sure base tools are current
