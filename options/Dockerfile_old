@@ -6,7 +6,6 @@ SHELL ["/bin/bash", "-lc"]
 # OS deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential git curl wget unzip zip patchelf \
-    python3.10 python3.10-dev python3.10-venv python3-pip \
     pkg-config g++ zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 

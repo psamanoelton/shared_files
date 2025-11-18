@@ -63,3 +63,35 @@ PY
 sed -i 's/\r$//' scripts/test_all.sh
 ./scripts/test_all.sh
 
+#######################################################
+git clone https://github.com/psamanoelton/quantum.git
+cd quantum
+git checkout feature/tf216_support
+
+conda activate tfq
+
+pip install -r requirements.txt
+
+./configure.sh --python="$(which python3.11)"
+bazel clean --expunge
+bazel build -c opt \
+  --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
+  --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
+  release:build_pip_package
+
+bazel-bin/release/build_pip_package /tmp/tfquantum
+pip install /tmp/tfquantum/*.whl
+
+cd ..
+python - <<'PY'
+import tensorflow as tf, tensorflow_quantum as tfq, tf_keras as k2, cirq, numpy as np, sympy
+print("TF:", tf.__version__)
+print("TFQ:", tfq.__version__)
+print("tf-keras:", k2.__version__)
+print("Cirq:", cirq.__version__)
+print("NumPy:", np.__version__)
+print("Sympy:", sympy.__version__)
+
+cd quantum
+./scripts/test_all.sh
+./scripts/ci_validate_tutorials.sh

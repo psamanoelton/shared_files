@@ -58,7 +58,7 @@ RUN git clone https://github.com/psamanoelton/quantum.git && \
     git checkout feature/tf216_support && \
     source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tfq && \
     pip install --no-cache-dir -r requirements.txt && \
-    ./configure.sh --python="$(which python3.11)" && \
+    ./configure.sh --python="$(which python)" && \
     bazel clean --expunge && \
     bazel build -c opt \
       --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
@@ -199,16 +199,16 @@ CMD ["/bin/bash"]
 # bazel-bin/release/build_pip_package /tmp/tfquantum
 # pip install /tmp/tfquantum/*.whl
 
-# cd ..
-# python - <<'PY'
-# import tensorflow as tf, tensorflow_quantum as tfq, tf_keras as k2, cirq, numpy as np, sympy
-# print("TF:", tf.__version__)
-# print("TFQ:", tfq.__version__)
-# print("tf-keras:", k2.__version__)
-# print("Cirq:", cirq.__version__)
-# print("NumPy:", np.__version__)
-# print("Sympy:", sympy.__version__)
-# PY
+cd ..
+python - <<'PY'
+import tensorflow as tf, tensorflow_quantum as tfq, tf_keras as k2, cirq, numpy as np, sympy
+print("TF:", tf.__version__)
+print("TFQ:", tfq.__version__)
+print("tf-keras:", k2.__version__)
+print("Cirq:", cirq.__version__)
+print("NumPy:", np.__version__)
+print("Sympy:", sympy.__version__)
+PY
 
 conda activate tfq
 cd quantum
@@ -220,8 +220,17 @@ docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\scripts\test_tu
 
 rm scripts/ci_validate_tutorials.sh
 docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\scripts\ci_validate_tutorials.sh" f719201a63fb:/workspace/quantum/scripts/ci_validate_tutorials.sh
-
 sed -i 's/\r$//' /workspace/quantum/scripts/ci_validate_tutorials.sh
+
+rm configure.sh
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\configure.sh" f719201a63fb:/workspace/quantum/configure.sh
+sed -i 's/\r$//' /workspace/quantum/configure.sh
+
+rm release/build_pip_package.sh
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\release\build_pip_package.sh" f719201a63fb:/workspace/quantum/release/build_pip_package.sh
+
+rm WORKSPACE
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\WORKSPACE" f719201a63fb:/workspace/quantum/WORKSPACE
 
 
 TFQ_TUTORIALS_ONLY=quantum/docs/tutorials/quantum_reinforcement_learning.ipynb \
@@ -233,4 +242,8 @@ docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\release\setup.p
 
 C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\release\setup.py
 
+
 pylint -v scripts/test_tutorials.py tensorflow_quantum/__init__.py |& tee ./pylint.out
+
+python -m yapf --style=google -i ^
+  release\setup.py scripts\test_tutorials.py tensorflow_quantum\__init__.py
