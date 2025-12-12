@@ -44,15 +44,15 @@ RUN wget -O /tmp/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-lat
     conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r && \
     conda clean -a -y
 
-# Create the Python 3.12 env for runtime/tests and auto-activate it on login
-RUN conda create -y -n tfq python=3.11 && \
+# Create the Python 3.11 env for runtime/tests and auto-activate it on login
+RUN conda create -y -n tf312 python=3.12 && \
     echo "source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tf312" >> /root/.bashrc
 
 # Make sure base tools are current
 RUN python3 -m pip install -U pip setuptools wheel numpy
 
 # -------------------------------------------------------------------
-# TensorFlow (2.21 nightly commit you used)
+# TensorFlow (2.21 nightly commit used here)
 # -------------------------------------------------------------------
 WORKDIR /workspace
 RUN git clone https://github.com/tensorflow/tensorflow.git && \
@@ -96,19 +96,19 @@ CMD ["/bin/bash"]
 # -------------------------------------------------------------------
 # (3) Clean + build with NVCC and Blackwell (12.0) PTX — example only
 #
-#   bazel clean --expunge
-#
-#   bazel build //tensorflow/tools/pip_package:wheel \
-#     --config=opt \
-#     --config=cuda \
-#     --@local_config_cuda//:cuda_compiler=nvcc \
-#     --@local_config_cuda//cuda:override_include_cuda_libs=true \
-#     --repo_env=HERMETIC_CUDA_VERSION=12.8.1 \
-#     --repo_env=HERMETIC_CUDNN_VERSION=9.8.0 \
-#     --repo_env=HERMETIC_CUDA_COMPUTE_CAPABILITIES=compute_120 \
-#     --repo_env=HERMETIC_PYTHON_VERSION=3.12 \
-#     --action_env=LD_LIBRARY_PATH \
-#     --verbose_failures
+# bazel clean --expunge
+
+# bazel build //tensorflow/tools/pip_package:wheel \
+# --config=opt \
+# --config=cuda \
+# --@local_config_cuda//:cuda_compiler=nvcc \
+# --@local_config_cuda//cuda:override_include_cuda_libs=true \
+# --repo_env=HERMETIC_CUDA_VERSION=12.8.1 \
+# --repo_env=HERMETIC_CUDNN_VERSION=9.8.0 \
+# --repo_env=HERMETIC_CUDA_COMPUTE_CAPABILITIES=compute_120 \
+# --repo_env=HERMETIC_PYTHON_VERSION=3.12 \
+# --action_env=LD_LIBRARY_PATH \
+# --verbose_failures
 #
 # Wheel ends up at:
 #   bazel-bin/tensorflow/tools/pip_package/wheel_house/tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl
@@ -116,13 +116,13 @@ CMD ["/bin/bash"]
 
 
 # # To build this image, run:
-# #    docker build -t tf220 .
+# #    docker build -t tf221 .
 
 # # To run this image, run:
-# #   docker run -it tf220
+# #   docker run -it tf221
 
 # # To remove the image, run:
-# #   docker rm -f tf220
+# #   docker rm -f tf221
 
 # Re open the image
 # #  docker exec -it 0d2f15258eb4 /bin/bash
@@ -130,9 +130,9 @@ CMD ["/bin/bash"]
 # conda create -y -n tf312 python=3.12
 # conda activate tf312
 
-docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl" 0d2f15258eb4:/workspace
-docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl-0.params" 0d2f15258eb4:/workspace
-docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\shared_files\check.py" 0d2f15258eb4:/workspace
+# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl" 0d2f15258eb4:/workspace
+# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl-0.params" 0d2f15258eb4:/workspace
+# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\shared_files\check.py" 0d2f15258eb4:/workspace
 
 
 # pip install bazel-bin/tensorflow/tools/pip_package/wheel_house/tensorflow-2.21.0.dev0+selfbuilt-cp312-cp312-linux_x86_64.whl
@@ -174,58 +174,58 @@ docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\shared_files\check.py" 0d
 # python -c "import tensorflow as tf; print('TF', tf.__version__); print('GPUs:', tf.config.list_physical_devices('GPU'))"
 
 
-git clone https://github.com/tensorflow/text.git
-cd text
-git checkout test_818668082
+# git clone https://github.com/tensorflow/text.git
+# cd text
+# git checkout test_818668082
 
-mkdir /github
+# mkdir /github
 
-export IS_NIGHTLY=nightly
-export TF_VERSION=grc.io/tensorflow-sigs/build-arm64:tf-latest-multi-python
+# export IS_NIGHTLY=nightly
+# export TF_VERSION=grc.io/tensorflow-sigs/build-arm64:tf-latest-multi-python
 
-./oss_scripts/run_build.sh
+# ./oss_scripts/run_build.sh
 
-pip install tensorflow_text_nightly-*.whl
+# pip install tensorflow_text_nightly-*.whl
 
-#### Extra packages ####
-pip install tensorflow-metadata
-pip install tensorflow-io
+# #### Extra packages ####
+# pip install tensorflow-metadata
+# pip install tensorflow-io
 
-# Bazel for this "old" packages
-apt update && apt install bazel-6.5.0
+# # Bazel for this "old" packages
+# apt update && apt install bazel-6.5.0
 
-pip install pyarrow apache-beam
+# pip install pyarrow apache-beam
 
-# tfx-bsl
-git clone https://github.com/tensorflow/tfx-bsl.git
-cd tfx-bsl
-pip install . --no-deps -v
-cd ..
+# # tfx-bsl
+# git clone https://github.com/tensorflow/tfx-bsl.git
+# cd tfx-bsl
+# pip install . --no-deps -v
+# cd ..
 
-# tf 2 onnix
-git clone https://github.com/tensorflow/tensorflow-onnx.git
-cd tensorflow-onnx
-pip install . --no-deps -v
-pip install onnx
-cd ..
+# # tf 2 onnix
+# git clone https://github.com/tensorflow/tensorflow-onnx.git
+# cd tensorflow-onnx
+# pip install . --no-deps -v
+# pip install onnx
+# cd ..
 
-# tfdv
-git clone https://github.com/tensorflow/data-validation.git
-cd data-validation
-# Modify needed numpy version
-sed -i 's/"numpy~=1.22.0"/"numpy>=1.26"/' pyproject.toml
-pip install . --no-deps -v
-pip install pyfarmhash
-pip install IPython
-pip install joblib
-pip install pandas
-cd ..
+# # tfdv
+# git clone https://github.com/tensorflow/data-validation.git
+# cd data-validation
+# # Modify needed numpy version
+# sed -i 's/"numpy~=1.22.0"/"numpy>=1.26"/' pyproject.toml
+# pip install . --no-deps -v
+# pip install pyfarmhash
+# pip install IPython
+# pip install joblib
+# pip install pandas
+# cd ..
 
-# tf transform
-git clone https://github.com/tensorflow/transform.git
-cd transform
-pip install . --no-deps -v
-pip install tf_keras
-cd ..
+# # tf transform
+# git clone https://github.com/tensorflow/transform.git
+# cd transform
+# pip install . --no-deps -v
+# pip install tf_keras
+# cd ..
 
 

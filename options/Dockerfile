@@ -199,6 +199,17 @@ CMD ["/bin/bash"]
 # bazel-bin/release/build_pip_package /tmp/tfquantum
 # pip install /tmp/tfquantum/*.whl
 
+############ TODO ############
+
+This will be needed when TFQ 2.20 is released
+
+Fix pip package to properly use TFQ with pip install
+Fix Google Colab TFQ install (enable TFQ in Google Colab)
+Update Devsite
+Update README
+Update TFQ Install instructions / Provide same steps as TF Install instructions
+
+############ TODO ############
 cd ..
 python - <<'PY'
 import tensorflow as tf, tensorflow_quantum as tfq, tf_keras as k2, cirq, numpy as np, sympy
@@ -247,3 +258,4 @@ pylint -v scripts/test_tutorials.py tensorflow_quantum/__init__.py |& tee ./pyli
 
 python -m yapf --style=google -i ^
   release\setup.py scripts\test_tutorials.py tensorflow_quantum\__init__.py
+
