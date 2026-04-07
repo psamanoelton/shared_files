@@ -1,0 +1,510 @@
+root@6baf6f3bfe08:/workspace/tensorboard# bazel run //tensorboard/pip_package:test_pip_package --   --tf-version "tensorflow==2.21"
+Starting local Bazel server and connecting to it...
+DEBUG: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_nodejs/index.bzl:65:14: node_repository attribute not set and no repository named 'nodejs_toolchains' exists; installing default node
+DEBUG: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_nodejs/index.bzl:73:14: yarn_install#yarn attribute not set and no repository named 'yarn' exists; installing default yarn
+WARNING: Download from https://storage.googleapis.com/mirror.tensorflow.org/github.com/bazelbuild/rules_java/archive/refs/tags/8.6.1.tar.gz failed: class java.io.FileNotFoundException GET returned 404 Not Found
+WARNING: Download from https://mirror.bazel.build/repo1.maven.org/maven2/com/google/guava/guava/32.1.1-jre/guava-32.1.1-jre.jar failed: class java.io.FileNotFoundException GET returned 404 Not Found
+WARNING: Download from https://mirror.bazel.build/repo1.maven.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar failed: class java.io.FileNotFoundException GET returned 404 Not Found
+WARNING: Download from https://mirror.bazel.build/repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.23.0/error_prone_annotations-2.23.0.jar failed: class java.io.FileNotFoundException GET returned 404 Not Found
+WARNING: Download from https://mirror.bazel.build/repo1.maven.org/maven2/com/google/flogger/flogger-system-backend/0.5.1/flogger-system-backend-0.5.1.jar failed: class java.io.FileNotFoundException GET returned 404 Not Found
+WARNING: Download from https://mirror.bazel.build/repo1.maven.org/maven2/com/google/flogger/flogger/0.5.1/flogger-0.5.1.jar failed: class java.io.FileNotFoundException GET returned 404 Not Found
+WARNING: Download from https://mirror.bazel.build/repo1.maven.org/maven2/com/google/flogger/google-extensions/0.5.1/google-extensions-0.5.1.jar failed: class java.io.FileNotFoundException GET returned 404 Not Found
+WARNING: Download from https://storage.googleapis.com/mirror.tensorflow.org/github.com/abseil/abseil-cpp/archive/9ac7062b1860d895fb5a8cbf58c3e9ef8f674b5f.zip failed: class java.io.FileNotFoundException GET returned 404 Not Found
+WARNING: Download from https://storage.googleapis.com/mirror.tensorflow.org/github.com/bazelbuild/rules_swift/releases/download/2.1.1/rules_swift.2.1.1.tar.gz failed: class java.io.FileNotFoundException GET returned 404 Not Found
+INFO: Analyzed target //tensorboard/pip_package:test_pip_package (888 packages loaded, 40226 targets configured).
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:173:10: input '_/sass/node_modules/is-extglob' of @@build_bazel_rules_sass_deps//:node_modules/is-extglob is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:285:10: input '_/sass/node_modules/source-map-js' of @@build_bazel_rules_sass_deps//:node_modules/source-map-js is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:61:10: input '_/sass/node_modules/braces' of @@build_bazel_rules_sass_deps//:node_modules/braces is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:237:10: input '_/sass/node_modules/picomatch' of @@build_bazel_rules_sass_deps//:node_modules/picomatch is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:77:10: input '_/sass/node_modules/chokidar' of @@build_bazel_rules_sass_deps//:node_modules/chokidar is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/esbuild_npm/BUILD.bazel:13:10: input '_/toolchains/esbuild/node_modules/esbuild' of @@esbuild_npm//:node_modules/esbuild is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:109:10: input '_/sass/node_modules/glob-parent' of @@build_bazel_rules_sass_deps//:node_modules/glob-parent is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:125:10: input '_/sass/node_modules/google-protobuf' of @@build_bazel_rules_sass_deps//:node_modules/google-protobuf is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:301:10: input '_/sass/node_modules/to-regex-range' of @@build_bazel_rules_sass_deps//:node_modules/to-regex-range is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:13:10: input '_/sass/node_modules/@bazel/worker' of @@build_bazel_rules_sass_deps//:node_modules/@bazel/worker is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:205:10: input '_/sass/node_modules/is-number' of @@build_bazel_rules_sass_deps//:node_modules/is-number is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:157:10: input '_/sass/node_modules/is-binary-path' of @@build_bazel_rules_sass_deps//:node_modules/is-binary-path is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:45:10: input '_/sass/node_modules/binary-extensions' of @@build_bazel_rules_sass_deps//:node_modules/binary-extensions is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:253:10: input '_/sass/node_modules/readdirp' of @@build_bazel_rules_sass_deps//:node_modules/readdirp is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:141:10: input '_/sass/node_modules/immutable' of @@build_bazel_rules_sass_deps//:node_modules/immutable is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:189:10: input '_/sass/node_modules/is-glob' of @@build_bazel_rules_sass_deps//:node_modules/is-glob is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:93:10: input '_/sass/node_modules/fill-range' of @@build_bazel_rules_sass_deps//:node_modules/fill-range is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:221:10: input '_/sass/node_modules/normalize-path' of @@build_bazel_rules_sass_deps//:node_modules/normalize-path is a directory; dependency checking of directories is unsound
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/http/libhttp.jar (10 source files) and running annotation processors (ComponentProcessor) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/http/filter/libfilter.jar (4 source files) and running annotation processors (ComponentProcessor) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:29:10: input '_/sass/node_modules/anymatch' of @@build_bazel_rules_sass_deps//:node_modules/anymatch is a directory; dependency checking of directories is unsound
+WARNING: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_sass_deps/BUILD.bazel:269:10: input '_/sass/node_modules/sass' of @@build_bazel_rules_sass_deps//:node_modules/sass is a directory; dependency checking of directories is unsound
+INFO: From Building external/com_google_protobuf/java/core/liblite_runtime_only.jar (94 source files) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/libtarjan.jar (1 source file) and running annotation processors (AutoAnnotationProcessor, AutoOneOfProcessor, AutoValueProcessor) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/libwebpath.jar (2 source files) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From SassCompiler tensorboard/webapp/styles.css [for tool]:
+WARNING: The same color styles are generated multiple times. Read more about how style duplication can be avoided in a dedicated guide. https://github.com/angular/components/blob/main/guides/duplicate-theming-styles.md
+    external/npm/node_modules/@angular/material/core/theming/_theming.scss 352:7   private-check-duplicate-theme-styles()
+    external/npm/node_modules/@angular/material/core/theming/_all-theme.scss 44:3  all-component-themes()
+    tensorboard/webapp/theme/_tb_theme.scss 308:3                                  tb-global-themed-styles()
+    tensorboard/webapp/styles.scss 18:1                                            root stylesheet
+
+WARNING: The same density styles are generated multiple times. Read more about how style duplication can be avoided in a dedicated guide. https://github.com/angular/components/blob/main/guides/duplicate-theming-styles.md
+    external/npm/node_modules/@angular/material/core/theming/_theming.scss 376:9   private-check-duplicate-theme-styles()
+    external/npm/node_modules/@angular/material/core/theming/_all-theme.scss 44:3  all-component-themes()
+    tensorboard/webapp/theme/_tb_theme.scss 308:3                                  tb-global-themed-styles()
+    tensorboard/webapp/styles.scss 18:1                                            root stylesheet
+
+WARNING: The same density styles are generated multiple times. Read more about how style duplication can be avoided in a dedicated guide. https://github.com/angular/components/blob/main/guides/duplicate-theming-styles.md
+    external/npm/node_modules/@angular/material/core/theming/_theming.scss 376:9   private-check-duplicate-theme-styles()
+    external/npm/node_modules/@angular/material/core/theming/_all-theme.scss 44:3  all-component-themes()
+    tensorboard/webapp/theme/_tb_theme.scss 401:5                                  tb-global-themed-styles()
+    tensorboard/webapp/styles.scss 18:1                                            root stylesheet
+
+WARNING: The same density styles are generated multiple times. Read more about how style duplication can be avoided in a dedicated guide. https://github.com/angular/components/blob/main/guides/duplicate-theming-styles.md
+    external/npm/node_modules/@angular/material/core/theming/_theming.scss 376:9          private-check-duplicate-theme-styles()
+    external/npm/node_modules/@angular/material/legacy-core/theming/_all-theme.scss 43:3  all-legacy-component-themes()
+    tensorboard/webapp/theme/_tb_theme.scss 402:5                                         tb-global-themed-styles()
+    tensorboard/webapp/styles.scss 18:1                                                   root stylesheet
+
+INFO: From Compiling python/google/protobuf/pyext/descriptor.cc [for tool]:
+external/com_google_protobuf/python/google/protobuf/pyext/descriptor.cc: In function 'PyObject* google::protobuf::python::field_descriptor::GetLabel(google::protobuf::python::PyBaseDescriptor*, void*)':
+external/com_google_protobuf/python/google/protobuf/pyext/descriptor.cc:828:53: warning: 'google::protobuf::internal::FieldDescriptorLite::Label google::protobuf::FieldDescriptor::label() const' is deprecated: Use is_required() or is_repeated() instead. [-Wdeprecated-declarations]
+  828 |   return PyLong_FromLong(_GetDescriptor(self)->label());
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+In file included from external/com_google_protobuf/python/google/protobuf/pyext/descriptor.h:16,
+                 from external/com_google_protobuf/python/google/protobuf/pyext/descriptor.cc:10:
+bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.h:2900:31: note: declared here
+ 2900 | inline FieldDescriptor::Label FieldDescriptor::label() const {
+      |                               ^~~~~~~~~~~~~~~
+INFO: From Compiling python/google/protobuf/pyext/extension_dict.cc [for tool]:
+external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc: In function 'PyObject* google::protobuf::python::extension_dict::subscript(google::protobuf::python::ExtensionDict*, PyObject*)':
+external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc:121:24: warning: 'google::protobuf::internal::FieldDescriptorLite::Label google::protobuf::FieldDescriptor::label() const' is deprecated: Use is_required() or is_repeated() instead. [-Wdeprecated-declarations]
+  121 |   if (descriptor->label() != FieldDescriptor::LABEL_REPEATED &&
+      |       ~~~~~~~~~~~~~~~~~^~
+In file included from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/message.h:108,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/generated_message_bases.h:21,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.pb.h:23,
+                 from external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc:17:
+bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.h:2900:31: note: declared here
+ 2900 | inline FieldDescriptor::Label FieldDescriptor::label() const {
+      |                               ^~~~~~~~~~~~~~~
+external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc:133:24: warning: 'google::protobuf::internal::FieldDescriptorLite::Label google::protobuf::FieldDescriptor::label() const' is deprecated: Use is_required() or is_repeated() instead. [-Wdeprecated-declarations]
+  133 |   if (descriptor->label() != FieldDescriptor::LABEL_REPEATED &&
+      |       ~~~~~~~~~~~~~~~~~^~
+In file included from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/message.h:108,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/generated_message_bases.h:21,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.pb.h:23,
+                 from external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc:17:
+bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.h:2900:31: note: declared here
+ 2900 | inline FieldDescriptor::Label FieldDescriptor::label() const {
+      |                               ^~~~~~~~~~~~~~~
+external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc:145:24: warning: 'google::protobuf::internal::FieldDescriptorLite::Label google::protobuf::FieldDescriptor::label() const' is deprecated: Use is_required() or is_repeated() instead. [-Wdeprecated-declarations]
+  145 |   if (descriptor->label() == FieldDescriptor::LABEL_REPEATED) {
+      |       ~~~~~~~~~~~~~~~~~^~
+In file included from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/message.h:108,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/generated_message_bases.h:21,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.pb.h:23,
+                 from external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc:17:
+bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.h:2900:31: note: declared here
+ 2900 | inline FieldDescriptor::Label FieldDescriptor::label() const {
+      |                               ^~~~~~~~~~~~~~~
+external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc: In function 'int google::protobuf::python::extension_dict::ass_subscript(google::protobuf::python::ExtensionDict*, PyObject*, PyObject*)':
+external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc:199:24: warning: 'google::protobuf::internal::FieldDescriptorLite::Label google::protobuf::FieldDescriptor::label() const' is deprecated: Use is_required() or is_repeated() instead. [-Wdeprecated-declarations]
+  199 |   if (descriptor->label() != FieldDescriptor::LABEL_OPTIONAL ||
+      |       ~~~~~~~~~~~~~~~~~^~
+In file included from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/message.h:108,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/generated_message_bases.h:21,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.pb.h:23,
+                 from external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc:17:
+bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.h:2900:31: note: declared here
+ 2900 | inline FieldDescriptor::Label FieldDescriptor::label() const {
+      |                               ^~~~~~~~~~~~~~~
+external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc: In function 'const google::protobuf::FieldDescriptor* google::protobuf::python::extension_dict::FindMessageSetExtension(const google::protobuf::Descriptor*)':
+external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc:220:25: warning: 'google::protobuf::internal::FieldDescriptorLite::Label google::protobuf::FieldDescriptor::label() const' is deprecated: Use is_required() or is_repeated() instead. [-Wdeprecated-declarations]
+  220 |         extension->label() == FieldDescriptor::LABEL_OPTIONAL &&
+      |         ~~~~~~~~~~~~~~~~^~
+In file included from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/message.h:108,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/generated_message_bases.h:21,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.pb.h:23,
+                 from external/com_google_protobuf/python/google/protobuf/pyext/extension_dict.cc:17:
+bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/_virtual_includes/protobuf/google/protobuf/descriptor.h:2900:31: note: declared here
+ 2900 | inline FieldDescriptor::Label FieldDescriptor::label() const {
+      |                               ^~~~~~~~~~~~~~~
+INFO: From Compiling src/google/protobuf/compiler/command_line_interface.cc [for tool]:
+In file included from /usr/include/c++/11/string:40,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/compiler/_virtual_includes/command_line_interface/google/protobuf/compiler/command_line_interface.h:21,
+                 from external/com_google_protobuf/src/google/protobuf/compiler/command_line_interface.cc:12:
+In static member function 'static constexpr int std::char_traits<char>::compare(const char_type*, const char_type*, std::size_t)',
+    inlined from 'constexpr int std::basic_string_view<_CharT, _Traits>::compare(std::basic_string_view<_CharT, _Traits>) const [with _CharT = char; _Traits = std::char_traits<char>]' at /usr/include/c++/11/string_view:315:34,
+    inlined from 'constexpr bool std::operator==(std::basic_string_view<_CharT, _Traits>, std::basic_string_view<_CharT, _Traits>) [with _CharT = char; _Traits = std::char_traits<char>]' at /usr/include/c++/11/string_view:537:53,
+    inlined from 'constexpr bool absl::lts_20250127::EndsWith(absl::lts_20250127::string_view, absl::lts_20250127::string_view)' at external/com_google_absl/absl/strings/match.h:83:25:
+/usr/include/c++/11/bits/char_traits.h:389:32: warning: 'int __builtin_memcmp_eq(const void*, const void*, long unsigned int)' specified bound 18446744073709551615 exceeds maximum object size 9223372036854775807 [-Wstringop-overread]
+  389 |         return __builtin_memcmp(__s1, __s2, __n);
+      |                ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/bits/basic_string.h:48,
+                 from /usr/include/c++/11/string:55,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/compiler/_virtual_includes/command_line_interface/google/protobuf/compiler/command_line_interface.h:21,
+                 from external/com_google_protobuf/src/google/protobuf/compiler/command_line_interface.cc:12:
+/usr/include/c++/11/string_view: In function 'constexpr bool absl::lts_20250127::EndsWith(absl::lts_20250127::string_view, absl::lts_20250127::string_view)':
+/usr/include/c++/11/string_view:308:34: note: source object allocated here
+  308 |         return basic_string_view{_M_str + __pos, __rlen};
+      |                                  ^~~~~~
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/webfiles/compiler/libcompiler.jar (1 source file) and running annotation processors (ComponentProcessor) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/com_google_protobuf/java/core/libcore.jar (44 source files, 1 source jar) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/com_google_common_html_types/libcom_google_common_html_types.jar (33 source files) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/webfiles/server/liblisting-class.jar (1 source file) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/com/google/javascript/jscomp/libjscomp.jar (14 source files) and running annotation processors (ComponentProcessor) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/webfiles/server/libserver.jar (9 source files) and running annotation processors (ComponentProcessor) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/ClosureWorker.jar (1 source file) and running annotation processors (ComponentProcessor) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/webfiles/server/libbuild_info_proto-speed.jar (1 source jar) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building tensorboard/java/org/tensorflow/tensorboard/vulcanize/Zipper.jar (1 source file) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building tensorboard/java/org/tensorflow/tensorboard/vulcanize/Vulcanize.jar (1 source file) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/libbuild_info_proto-speed.jar (1 source jar) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/webfiles/libwebfiles.jar (8 source files) and running annotation processors (AutoAnnotationProcessor, AutoOneOfProcessor, AutoValueProcessor, ComponentProcessor) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/worker/libworker.jar (13 source files) and running annotation processors (AutoAnnotationProcessor, AutoOneOfProcessor, AutoValueProcessor, ComponentProcessor) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/webfiles/libbuild_info_proto-speed.jar (1 source jar) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Building external/io_bazel_rules_closure/java/io/bazel/rules/closure/worker/libworker_protocol_proto-speed.jar (1 source jar) [for tool]:
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+INFO: From Checking webfiles @//tensorboard:assets [for tool]:
+WARNING: bazel-out/k8-opt-exec-ST-a828a81199fe/bin/tensorboard/webapp/index.html: Referenced index.js?_file_hash=aebd0429 (/index.js?_file_hash=aebd0429) without depending on a web_library() rule providing it
+INFO: Found 1 target...
+Target //tensorboard/pip_package:test_pip_package up-to-date:
+  bazel-bin/tensorboard/pip_package/test_pip_package
+INFO: Elapsed time: 1288.249s, Critical Path: 375.10s
+INFO: 3205 processes: 1559 internal, 22 local, 1624 processwrapper-sandbox.
+INFO: Build completed successfully, 3205 total actions
+INFO: Running command line: bazel-bin/tensorboard/pip_package/test_pip_package --tf-version 'tensorflow==2.21'
++ command -v curl
++ command -v perl
++ command -v virtualenv
++ initialize_workdir
++ mktemp -d
++ workdir=/tmp/tmp.XbjDUn7L7N
++ wheels=/tmp/tmp.XbjDUn7L7N/wheels
++ virtualenvs_root=/tmp/tmp.XbjDUn7L7N/virtualenvs
++ mkdir -p /tmp/tmp.XbjDUn7L7N/wheels /tmp/tmp.XbjDUn7L7N/virtualenvs
++ extract_wheels
++ tar xzvf /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/bin/tensorboard/pip_package/test_pip_package.runfiles/org_tensorflow_tensorboard/tensorboard/pip_package/pip_packages.tar.gz -C /tmp/tmp.XbjDUn7L7N/wheels
+tensorboard-2.21.0a0-py3-none-any.whl
++ smoke python3
++ [ 1 -eq 1 ]
++ smoke_python=python3
++ python3 -c import sys; print(sys.version_info[0])
++ py_major_version=3
++ smoke_venv=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/
++ set +x
+
+
+======================================================================
+Smoke testing with python3 and tensorflow==2.21...
+
++ command -v python3
++ virtualenv -q -p python3 /tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/
++ cd /tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/
++ export VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/
++ export PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/root/.cache/bazelisk/downloads/sha256/fe7e799cbc9140f986b063e06800a3d4c790525075c877d00a7112669824acbf/bin:/opt/tb-venv/bin:/usr/lib/jvm/java-11-openjdk-amd64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++ unset PYTHON_HOME
++ unset PYTHONPATH PYTHONSTARTUP PYTHONSAFEPATH PYTHONNOUSERSITE PYTHONUSERBASE
++ unset BUILD_WORKSPACE_DIRECTORY BUILD_WORKING_DIRECTORY
++ unset RUNFILES RUNFILES_DIR RUNFILES_MANIFEST_FILE RUNFILES_MANIFEST_ONLY
++ unset RUNFILES_REPO_MAPPING JAVA_RUNFILES PYTHON_RUNFILES
++ unset TEST_SRCDIR TEST_WORKSPACE TEST_BINARY BAZEL_TEST
++ pip install -qU pip
++ [ -n tensorflow==2.21 ]
++ pip install -qU tensorflow==2.21
++ pip uninstall -qy tensorboard tb-nightly
+WARNING: Skipping tensorboard as it is not installed.
+WARNING: Skipping tb-nightly as it is not installed.
++ pip install -qU /tmp/tmp.XbjDUn7L7N/wheels/tensorboard-2.21.0a0-py3-none-any.whl
++ pip freeze
+absl-py==2.4.0
+astunparse==1.6.3
+certifi==2026.2.25
+charset-normalizer==3.4.7
+flatbuffers==25.12.19
+gast==0.7.0
+google-pasta==0.2.0
+grpcio==1.80.0
+h5py==3.14.0
+idna==3.11
+keras==3.14.0
+libclang==18.1.1
+Markdown==3.10.2
+markdown-it-py==4.0.0
+MarkupSafe==3.0.3
+mdurl==0.1.2
+ml_dtypes==0.5.4
+namex==0.1.0
+numpy==2.4.4
+opt_einsum==3.4.0
+optree==0.19.0
+packaging==26.0
+pillow==12.2.0
+protobuf==7.34.1
+Pygments==2.20.0
+requests==2.33.1
+rich==14.3.3
+setuptools==82.0.1
+six==1.17.0
+tensorboard @ file:///tmp/tmp.XbjDUn7L7N/wheels/tensorboard-2.21.0a0-py3-none-any.whl#sha256=bffd755882be1cbc6562ebdc571338a893115e5a339743df9212f49a70c41ce6
+tensorboard-data-server==0.7.2
+tensorflow==2.21.0
+termcolor==3.3.0
+typing_extensions==4.15.0
+urllib3==2.6.3
+Werkzeug==3.1.8
+wheel==0.46.3
+wrapt==2.1.2
++ [ -x ./bin/tensorboard ]
++ mkfifo pipe
++ smoke_env+  ./bin/tensorboard --port=0 --logdir=smokedirperl
+ -ne print STDERR;/http:.*:(\d+)/ and print $1.v10 and exit 0
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/tensorboard --port=0 --logdir=smokedir
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498661.151287   36629 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498661.210961   36629 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498662.994604   36629 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1775498663.316171   36629 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+
+NOTE: Using experimental fast data loading logic. To disable, pass
+    "--load_fast=false" and report issues on GitHub. More details:
+    https://github.com/tensorflow/tensorboard/issues/4784
+
+Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
+TensorBoard 2.21.0a0 at http://localhost:42827/ (Press CTRL+C to quit)
++ cat port
++ curl -fs http://localhost:42827
++ grep <tb-webapp index.html
+  </noscript><tb-webapp></tb-webapp><script src="index.js?_file_hash=aebd0429"></script></body></html>
++ cat port
++ curl -fs http://localhost:42827/data/logdir
++ grep smokedir logdir.json
+{"logdir": "smokedir"}
++ cat port
++ curl -fs http://localhost:42827/data/plugin/projector/runs
++ grep \[\] projector_runs.json
+[]
++ cat port
++ curl -fs http://localhost:42827/data/plugin/projector/projector_binary.html
++ grep <vz-projector-dashboard projector_binary.html
+</head><body><vz-projector-dashboard></vz-projector-dashboard><script src="projector_binary.js"></script></body></html>
++ kill 36627
++ export TF_CPP_MIN_LOG_LEVEL=1
++ smoke_env ./bin/python -I -c
+import tensorboard as tb
+assert tb.__version__ == tb.version.VERSION
+assert issubclass(tb.errors.NotFoundError, tb.errors.PublicError)
+from tensorboard.plugins.projector import visualize_embeddings
+tb.notebook.start  # don't invoke; just check existence
+from tensorboard.plugins.hparams import summary_v2 as hp
+hp.hparams_pb({'optimizer': 'adam', 'learning_rate': 0.02})
+
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -c
+import tensorboard as tb
+assert tb.__version__ == tb.version.VERSION
+assert issubclass(tb.errors.NotFoundError, tb.errors.PublicError)
+from tensorboard.plugins.projector import visualize_embeddings
+tb.notebook.start  # don't invoke; just check existence
+from tensorboard.plugins.hparams import summary_v2 as hp
+hp.hparams_pb({'optimizer': 'adam', 'learning_rate': 0.02})
+
++ [ -n tensorflow==2.21 ]
++ smoke_env ./bin/python -I -c
+import tensorboard as tb
+tb.summary.v1.scalar_pb('test', 42)
+tb.summary.scalar('test v2', 1337)
+from tensorboard.plugins.mesh import summary
+
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -c
+import tensorboard as tb
+tb.summary.v1.scalar_pb('test', 42)
+tb.summary.scalar('test v2', 1337)
+from tensorboard.plugins.mesh import summary
+
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498664.498004   36692 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498664.553816   36692 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498666.141342   36692 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1775498666.492156   36692 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
++ [ -n tensorflow==2.21 ]
++ test_tf_summary .compat.v2
++ import_attr=import tensorflow as tf; a = tf.compat.v2.summary; a.write; a.scalar
++ import_as=import tensorflow.compat.v2.summary as b; b.write; b.scalar
++ import_from=from tensorflow.compat.v2 import summary as c; c.write; c.scalar
++ printf %s\n import tensorflow as tf; a = tf.compat.v2.summary; a.write; a.scalar import tensorflow.compat.v2.summary as b; b.write; b.scalar from tensorflow.compat.v2 import summary as c; c.write; c.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498667.368787   36720 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498667.421014   36720 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498669.114091   36720 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf %s\n import tensorflow as tf; a = tf.compat.v2.summary; a.write; a.scalar from tensorflow.compat.v2 import summary as c; c.write; c.scalar import tensorflow.compat.v2.summary as b; b.write; b.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498670.284498   36731 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498670.339617   36731 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498672.059239   36731 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf %s\n import tensorflow.compat.v2.summary as b; b.write; b.scalar import tensorflow as tf; a = tf.compat.v2.summary; a.write; a.scalar from tensorflow.compat.v2 import summary as c; c.write; c.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498673.236723   36742 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498673.307768   36742 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498674.971897   36742 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf %s\n import tensorflow.compat.v2.summary as b; b.write; b.scalar from tensorflow.compat.v2 import summary as c; c.write; c.scalar import tensorflow as tf; a = tf.compat.v2.summary; a.write; a.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498676.164463   36753 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498676.217838   36753 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498677.881404   36753 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf %s\n from tensorflow.compat.v2 import summary as c; c.write; c.scalar import tensorflow as tf; a = tf.compat.v2.summary; a.write; a.scalar import tensorflow.compat.v2.summary as b; b.write; b.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498679.044467   36764 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498679.097477   36764 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498680.881815   36764 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf %s\n from tensorflow.compat.v2 import summary as c; c.write; c.scalar import tensorflow.compat.v2.summary as b; b.write; b.scalar import tensorflow as tf; a = tf.compat.v2.summary; a.write; a.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498682.068124   36775 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498682.124301   36775 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498683.921323   36775 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ is_tf_2
++ smoke_env ./bin/python -I -c import tensorflow as tf; assert tf.__version__[:2] == '2.'
++ test_tf_summary
++ import_attr=import tensorflow as tf; a = tf.summary; a.write; a.scalar
++ import_as=import tensorflow.summary as b; b.write; b.scalar
++ import_from=from tensorflow import summary as c; c.write; c.scalar
++ printf %s\n import tensorflow as tf; a = tf.summary; a.write; a.scalar import tensorflow.summary as b; b.write; b.scalar from tensorflow import summary as c; c.write; c.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498688.109104   36795 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498688.161820   36795 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498689.863238   36795 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf %s\n import tensorflow as tf; a = tf.summary; a.write; a.scalar from tensorflow import summary as c; c.write; c.scalar import tensorflow.summary as b; b.write; b.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498690.110828   36806 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498690.164122   36806 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498691.861200   36806 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf %s\n import tensorflow.summary as b; b.write; b.scalar import tensorflow as tf; a = tf.summary; a.write; a.scalar from tensorflow import summary as c; c.write; c.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498693.070137   36817 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498693.122314   36817 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498694.918646   36817 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf %s\n import tensorflow.summary as b; b.write; b.scalar from tensorflow import summary as c; c.write; c.scalar import tensorflow as tf; a = tf.summary; a.write; a.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498696.101184   36828 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498696.171034   36828 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498697.994029   36828 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf %s\n from tensorflow import summary as c; c.write; c.scalar import tensorflow as tf; a = tf.summary; a.write; a.scalar import tensorflow.summary as b; b.write; b.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498699.259769   36839 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498699.315474   36839 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498701.169019   36839 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf %s\n from tensorflow import summary as c; c.write; c.scalar import tensorflow.summary as b; b.write; b.scalar import tensorflow as tf; a = tf.summary; a.write; a.scalar
++ smoke_env ./bin/python -I -
++ env -i HOME=/root LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/tmp VIRTUAL_ENV=/tmp/tmp.XbjDUn7L7N/virtualenvs/venv-python3/ ./bin/python -I -
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498702.386787   36850 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+I0000 00:00:1775498702.438592   36850 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775498704.169439   36850 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
++ printf All smoke tests passed.
+All smoke tests passed.+ cleanup
++ [ -n set ]
++ rm -rf /tmp/tmp.XbjDUn7L7N

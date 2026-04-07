@@ -1,0 +1,54 @@
+root@db08dad745cf:/workspace/tensorboard# bazel test //tensorboard/data/server:update_protos_test --test_output=errors
+WARNING: Ignoring JAVA_HOME, because it must point to a JDK, not a JRE.
+WARNING: Build option --test_env has changed, discarding analysis cache (this can be expensive, see https://bazel.build/advanced/performance/iteration-speed).
+WARNING: /workspace/tensorboard/tensorboard/data/server/BUILD:154:8: in genrule rule //tensorboard/data/server:gen_protos: target '//tensorboard/data/server:gen_protos' depends on deprecated target '@@com_google_protobuf//:well_known_protos': Prefer :well_known_type_protos instead.
+INFO: Analyzed target //tensorboard/data/server:update_protos_test (45 packages loaded, 3174 targets configured).
+FAIL: //tensorboard/data/server:update_protos_test (see /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/testlogs/tensorboard/data/server/update_protos_test/test.log)
+INFO: From Testing //tensorboard/data/server:update_protos_test:
+==================== Test output for //tensorboard/data/server:update_protos_test:
+tensorboard/data/server/tensorboard.pb.rs OK
+tensorboard/data/server/tensorboard.data.pb.rs OK
+tensorboard/data/server/descriptor.bin out of date
+To update, run //tensorboard/data/server:update_protos
+================================================================================
+INFO: Found 1 test target...
+Target //tensorboard/data/server:update_protos_test up-to-date:
+  bazel-bin/tensorboard/data/server/update_protos_test
+INFO: Elapsed time: 75.605s, Critical Path: 34.17s
+INFO: 76 processes: 24 internal, 52 processwrapper-sandbox.
+INFO: Build completed, 1 test FAILED, 76 total actions
+//tensorboard/data/server:update_protos_test                             FAILED in 0.1s
+  /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/testlogs/tensorboard/data/server/update_protos_test/test.log
+
+Executed 1 out of 1 test: 1 fails locally.
+root@db08dad745cf:/workspace/tensorboard# bazel run //tensorboard/data/server:update_protos
+WARNING: Ignoring JAVA_HOME, because it must point to a JDK, not a JRE.
+WARNING: Build option --test_env has changed, discarding analysis cache (this can be expensive, see https://bazel.build/advanced/performance/iteration-speed).
+WARNING: /workspace/tensorboard/tensorboard/data/server/BUILD:154:8: in genrule rule //tensorboard/data/server:gen_protos: target '//tensorboard/data/server:gen_protos' depends on deprecated target '@@com_google_protobuf//:well_known_protos': Prefer :well_known_type_protos instead.
+INFO: Analyzed target //tensorboard/data/server:update_protos (0 packages loaded, 3151 targets configured).
+INFO: Found 1 target...
+Target //tensorboard/data/server:update_protos up-to-date:
+  bazel-bin/tensorboard/data/server/update_protos
+INFO: Elapsed time: 1.093s, Critical Path: 0.05s
+INFO: 5 processes: 5 internal.
+INFO: Build completed successfully, 5 total actions
+INFO: Running command line: bazel-bin/tensorboard/data/server/update_protos --update tensorboard tensorboard.data descriptor.bin
+root@db08dad745cf:/workspace/tensorboard# git diff -- tensorboard/data/server
+diff --git a/tensorboard/data/server/descriptor.bin b/tensorboard/data/server/descriptor.bin
+index bd230a394..a0475fb3e 100644
+Binary files a/tensorboard/data/server/descriptor.bin and b/tensorboard/data/server/descriptor.bin differ
+root@db08dad745cf:/workspace/tensorboard# bazel test //tensorboard/data/server:update_protos_test --test_output=errors
+WARNING: Ignoring JAVA_HOME, because it must point to a JDK, not a JRE.
+WARNING: Build option --test_env has changed, discarding analysis cache (this can be expensive, see https://bazel.build/advanced/performance/iteration-speed).
+WARNING: /workspace/tensorboard/tensorboard/data/server/BUILD:154:8: in genrule rule //tensorboard/data/server:gen_protos: target '//tensorboard/data/server:gen_protos' depends on deprecated target '@@com_google_protobuf//:well_known_protos': Prefer :well_known_type_protos instead.
+INFO: Analyzed target //tensorboard/data/server:update_protos_test (0 packages loaded, 3174 targets configured).
+INFO: Found 1 test target...
+Target //tensorboard/data/server:update_protos_test up-to-date:
+  bazel-bin/tensorboard/data/server/update_protos_test
+INFO: Elapsed time: 1.060s, Critical Path: 0.16s
+INFO: 2 processes: 2 processwrapper-sandbox.
+INFO: Build completed successfully, 2 total actions
+//tensorboard/data/server:update_protos_test                             PASSED in 0.1s
+  WARNING: //tensorboard/data/server:update_protos_test: Test execution time (0.1s excluding execution overhead) outside of range for MODERATE tests. Consider setting timeout="short" or size="small".
+
+Executed 1 out of 1 test: 1 test passes.

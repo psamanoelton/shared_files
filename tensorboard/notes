@@ -1,0 +1,99 @@
+# Show versions for debugging
+python --version
+node --version
+yarn --version
+bazel --version
+
+# Sanity chek Java
+echo "JAVA_HOME=$JAVA_HOME"
+which java
+java -version
+which javac
+javac -version
+
+# Install TB dependencies
+pip install "tensorflow==2.21.0"
+pip install \
+  -r ./tensorboard/pip_package/requirements.txt \
+  -r ./tensorboard/pip_package/requirements_dev.txt
+
+# Match TensorBoard's Bazel-side controlled Python environment, which vendors
+# urllib3 1.26.20 for source builds and CI-like runs.
+pip install --force-reinstall "urllib3==1.26.20" "six>=1.12,<2"
+
+# Pip package
+bazel run //tensorboard/pip_package:test_pip_package -- \
+  --tf-version "tensorflow==2.21"
+
+# Tests
+bazel test //tensorboard/... --test_output=errors
+bazel test //tensorboard/... --test_output=errors | tee /tmp/tb_bazel_test_all_fresh.log
+
+
+bazel test //tensorboard/data/server:update_protos_test --test_output=errors
+bazel run //tensorboard/data/server:update_protos
+
+
+# Build and install pip package locally
+bazel build //tensorboard/pip_package:build_pip_package && \
+    mkdir -p /tmp/tb_wheel && \
+    ./bazel-bin/tensorboard/pip_package/build_pip_package /tmp/tb_wheel && \
+    pip install /tmp/tb_wheel/tensorboard-*.whl
+
+# Test TB import
+cd ..
+python - <<'PY'
+from tensorboard.summary.writer.event_file_writer import EventFileWriter
+from tensorboard.compat.proto.event_pb2 import Event
+from tensorboard.compat.proto.summary_pb2 import Summary
+import time
+
+writer = EventFileWriter("logs/test_run")
+
+for step in range(5):
+    summary = Summary(value=[
+        Summary.Value(tag="loss", simple_value=step * 0.5)
+    ])
+    event = Event(wall_time=time.time(), step=step, summary=summary)
+    writer.add_event(event)
+
+writer.close()
+print("TensorBoard write test OK")
+PY
+
+
+docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorboard_p" 023a0c78d10e:/workspace/tensorboard
+
+root@023a0c78d10e:/workspace#
+
+apt-get update && apt-get install -y dos2unix
+find /workspace/tensorboard -type f -exec dos2unix {} \;
+
+
+docker cp 023a0c78d10e:/tmp/tb_bazel_test_all_fresh.log .
+
+
+bazel test --test_output=errors \
+//tensorboard/plugins/text:summary_test \
+//tensorboard/plugins/scalar:summary_test \
+//tensorboard/plugins/scalar:scalars_plugin_test \
+//tensorboard/plugins/scalar:scalars_plugin_notf_test \
+//tensorboard/plugins/projector/vz_projector:vz_projector_test_chromium-local \
+//tensorboard/plugins/projector:projector_plugin_test \
+//tensorboard/plugins/projector:projector_plugin_notf_test \
+//tensorboard/backend/event_processing:reservoir_test \
+//tensorboard/compat/tensorflow_stub:gfile_test \
+//tensorboard/data:grpc_provider_test \
+//tensorboard:manager_e2e_test
+
+bazel test --test_output=errors \
+//tensorboard/summary/writer:event_file_writer_test \
+//tensorboard/uploader:logdir_loader_test \
+//tensorboard/util:lazy_tensor_creator_test \
+//tensorboard/webapp:karma_test_chromium-local \
+//tensorboard/webapp/feature_flag:karma_test_chromium-local \
+//tensorboard/webapp/hparams:karma_test_chromium-local \
+//tensorboard/webapp/notification_center:notification_center_test_chromium-local \
+//tensorboard/webapp/persistent_settings:karma_test_chromium-local \
+//tensorboard/webapp/settings:karma_test_chromium-local \
+//tensorboard:manager_e2e_test

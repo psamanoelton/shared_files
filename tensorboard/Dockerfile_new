@@ -1,0 +1,14 @@
+FROM us-docker.pkg.dev/ml-oss-artifacts-published/ml-public-container/ml-build:latest
+
+WORKDIR /workspace
+
+RUN apt-get update && apt-get install -y \
+    libgbm-dev \
+    libxss1 \
+    libasound2 \
+ && rm -rf /var/lib/apt/lists/*
+
+# docker build -t tb-py312 .
+# docker run -it tb-py312
+# docker system prune -a -f
+
