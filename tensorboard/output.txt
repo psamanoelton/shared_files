@@ -1,54 +1,233 @@
-root@db08dad745cf:/workspace/tensorboard# bazel test //tensorboard/data/server:update_protos_test --test_output=errors
-WARNING: Ignoring JAVA_HOME, because it must point to a JDK, not a JRE.
-WARNING: Build option --test_env has changed, discarding analysis cache (this can be expensive, see https://bazel.build/advanced/performance/iteration-speed).
-WARNING: /workspace/tensorboard/tensorboard/data/server/BUILD:154:8: in genrule rule //tensorboard/data/server:gen_protos: target '//tensorboard/data/server:gen_protos' depends on deprecated target '@@com_google_protobuf//:well_known_protos': Prefer :well_known_type_protos instead.
-INFO: Analyzed target //tensorboard/data/server:update_protos_test (45 packages loaded, 3174 targets configured).
-FAIL: //tensorboard/data/server:update_protos_test (see /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/testlogs/tensorboard/data/server/update_protos_test/test.log)
-INFO: From Testing //tensorboard/data/server:update_protos_test:
-==================== Test output for //tensorboard/data/server:update_protos_test:
-tensorboard/data/server/tensorboard.pb.rs OK
-tensorboard/data/server/tensorboard.data.pb.rs OK
-tensorboard/data/server/descriptor.bin out of date
-To update, run //tensorboard/data/server:update_protos
-================================================================================
-INFO: Found 1 test target...
-Target //tensorboard/data/server:update_protos_test up-to-date:
-  bazel-bin/tensorboard/data/server/update_protos_test
-INFO: Elapsed time: 75.605s, Critical Path: 34.17s
-INFO: 76 processes: 24 internal, 52 processwrapper-sandbox.
-INFO: Build completed, 1 test FAILED, 76 total actions
-//tensorboard/data/server:update_protos_test                             FAILED in 0.1s
-  /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/testlogs/tensorboard/data/server/update_protos_test/test.log
-
-Executed 1 out of 1 test: 1 fails locally.
-root@db08dad745cf:/workspace/tensorboard# bazel run //tensorboard/data/server:update_protos
-WARNING: Ignoring JAVA_HOME, because it must point to a JDK, not a JRE.
-WARNING: Build option --test_env has changed, discarding analysis cache (this can be expensive, see https://bazel.build/advanced/performance/iteration-speed).
-WARNING: /workspace/tensorboard/tensorboard/data/server/BUILD:154:8: in genrule rule //tensorboard/data/server:gen_protos: target '//tensorboard/data/server:gen_protos' depends on deprecated target '@@com_google_protobuf//:well_known_protos': Prefer :well_known_type_protos instead.
-INFO: Analyzed target //tensorboard/data/server:update_protos (0 packages loaded, 3151 targets configured).
-INFO: Found 1 target...
-Target //tensorboard/data/server:update_protos up-to-date:
-  bazel-bin/tensorboard/data/server/update_protos
-INFO: Elapsed time: 1.093s, Critical Path: 0.05s
-INFO: 5 processes: 5 internal.
-INFO: Build completed successfully, 5 total actions
-INFO: Running command line: bazel-bin/tensorboard/data/server/update_protos --update tensorboard tensorboard.data descriptor.bin
-root@db08dad745cf:/workspace/tensorboard# git diff -- tensorboard/data/server
-diff --git a/tensorboard/data/server/descriptor.bin b/tensorboard/data/server/descriptor.bin
-index bd230a394..a0475fb3e 100644
-Binary files a/tensorboard/data/server/descriptor.bin and b/tensorboard/data/server/descriptor.bin differ
-root@db08dad745cf:/workspace/tensorboard# bazel test //tensorboard/data/server:update_protos_test --test_output=errors
-WARNING: Ignoring JAVA_HOME, because it must point to a JDK, not a JRE.
-WARNING: Build option --test_env has changed, discarding analysis cache (this can be expensive, see https://bazel.build/advanced/performance/iteration-speed).
-WARNING: /workspace/tensorboard/tensorboard/data/server/BUILD:154:8: in genrule rule //tensorboard/data/server:gen_protos: target '//tensorboard/data/server:gen_protos' depends on deprecated target '@@com_google_protobuf//:well_known_protos': Prefer :well_known_type_protos instead.
-INFO: Analyzed target //tensorboard/data/server:update_protos_test (0 packages loaded, 3174 targets configured).
-INFO: Found 1 test target...
-Target //tensorboard/data/server:update_protos_test up-to-date:
-  bazel-bin/tensorboard/data/server/update_protos_test
-INFO: Elapsed time: 1.060s, Critical Path: 0.16s
-INFO: 2 processes: 2 processwrapper-sandbox.
-INFO: Build completed successfully, 2 total actions
-//tensorboard/data/server:update_protos_test                             PASSED in 0.1s
-  WARNING: //tensorboard/data/server:update_protos_test: Test execution time (0.1s excluding execution overhead) outside of range for MODERATE tests. Consider setting timeout="short" or size="small".
-
-Executed 1 out of 1 test: 1 test passes.
+root@33b76923ca91:/workspace/tensorboard# git diff -- tensorboard/__init__.py tensorboard/compat/__init__.py tensorboard/summary/__init__.py
+diff --git a/tensorboard/__init__.py b/tensorboard/__init__.py
+index 95bc174e6..e69de29bb 100644
+--- a/tensorboard/__init__.py
++++ b/tensorboard/__init__.py
+@@ -1,113 +0,0 @@
+-# Copyright 2017 The TensorFlow Authors. All Rights Reserved.
+-#
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+-# You may obtain a copy of the License at
+-#
+-#     http://www.apache.org/licenses/LICENSE-2.0
+-#
+-# Unless required by applicable law or agreed to in writing, software
+-# distributed under the License is distributed on an "AS IS" BASIS,
+-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-# See the License for the specific language governing permissions and
+-# limitations under the License.
+-# ==============================================================================
+-"""TensorBoard is a webapp for understanding TensorFlow runs and graphs."""
+-
+-
+-from tensorboard import lazy as _lazy
+-from tensorboard import version as _version
+-
+-# TensorBoard public API.
+-__all__ = [
+-    "__version__",
+-    "errors",
+-    "notebook",
+-    "program",
+-    "summary",
+-]
+-
+-
+-# Please be careful when changing the structure of this file.
+-#
+-# The lazy imports in this file must use `importlib.import_module`, not
+-# `import tensorboard.foo` or `from tensorboard import foo`, or it will
+-# be impossible to reload the TensorBoard module without breaking these
+-# top-level public APIs. This has to do with the gory details of
+-# Python's module system. Take `tensorboard.notebook` as an example:
+-#
+-#   - When the `tensorboard` module (that's us!) is initialized, its
+-#     `notebook` attribute is initialized to a new LazyModule. The
+-#     actual `tensorboard.notebook` submodule is not loaded.
+-#
+-#   - When the `tensorboard.notebook` submodule is first loaded, Python
+-#     _reassigns_ the `notebook` attribute on the `tensorboard` module
+-#     object to point to the underlying `tensorboard.notebook` module
+-#     object, rather than its former LazyModule value. This occurs
+-#     whether the module is loaded via the lazy module or directly as an
+-#     import:
+-#
+-#       - import tensorboard; tensorboard.notebook.start(...)  # one way
+-#       - from tensorboard import notebook  # other way; same effect
+-#
+-#   - When the `tensorboard` module is reloaded, its `notebook`
+-#     attribute is once again bound to a (new) LazyModule, while the
+-#     `tensorboard.notebook` module object is unaffected and still
+-#     exists in `sys.modules`. But then...
+-#
+-#   - When the new LazyModule is forced, it must resolve to the existing
+-#     `tensorboard.notebook` module object rather than itself (which
+-#     just creates a stack overflow). If the LazyModule load function
+-#     uses `import tensorboard.notebook; return tensorboard.notebook`,
+-#     then the first statement will do _nothing_ because the
+-#     `tensorboard.notebook` module is already loaded, and the second
+-#     statement will return the LazyModule itself. The same goes for the
+-#     `from tensorboard import notebook` form. We need to ensure that
+-#     the submodule is loaded and then pull the actual module object out
+-#     of `sys.modules`... which is exactly what `importlib` handles for
+-#     us.
+-#
+-# See <https://github.com/tensorflow/tensorboard/issues/1989> for
+-# additional discussion.
+-
+-
+-@_lazy.lazy_load("tensorboard.errors")
+-def errors():
+-    import importlib
+-
+-    return importlib.import_module("tensorboard.errors")
+-
+-
+-@_lazy.lazy_load("tensorboard.notebook")
+-def notebook():
+-    import importlib
+-
+-    return importlib.import_module("tensorboard.notebook")
+-
+-
+-@_lazy.lazy_load("tensorboard.program")
+-def program():
+-    import importlib
+-
+-    return importlib.import_module("tensorboard.program")
+-
+-
+-@_lazy.lazy_load("tensorboard.summary")
+-def summary():
+-    import importlib
+-
+-    return importlib.import_module("tensorboard.summary")
+-
+-
+-def load_ipython_extension(ipython):
+-    """IPython API entry point.
+-
+-    Only intended to be called by the IPython runtime.
+-
+-    See:
+-      https://ipython.readthedocs.io/en/stable/config/extensions/index.html
+-    """
+-    notebook._load_ipython_extension(ipython)
+-
+-
+-__version__ = _version.VERSION
+diff --git a/tensorboard/compat/__init__.py b/tensorboard/compat/__init__.py
+index aedef948d..e69de29bb 100644
+--- a/tensorboard/compat/__init__.py
++++ b/tensorboard/compat/__init__.py
+@@ -1,69 +0,0 @@
+-# Copyright 2017 The TensorFlow Authors. All Rights Reserved.
+-#More--
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+-# You may obtain a copy of the License at
+-#More--
+-#     http://www.apache.org/licenses/LICENSE-2.0
+-#More--
+-# Unless required by applicable law or agreed to in writing, software
+-# distributed under the License is distributed on an "AS IS" BASIS,
+-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-# See the License for the specific language governing permissions and
+-# limitations under the License.
+-
+-"""Compatibility interfaces for TensorBoard.
+-
+-This module provides logic for importing variations on the TensorFlow
+-APIs, as lazily loaded imports to help avoid circular dependency issues
+-and defer the search and loading of the module until necessary.
+-"""re--
+-
+-import importlib
+-
+-import tensorboard.lazy as _lazy
+-
+-
+-@_lazy.lazy_load("tensorboard.compat.tf")
+-def tf():
+-    """Provide the root module of a TF-like API for use within TensorBoard.
+-
+-    By default this is equivalent to `import tensorflow as tf`, but it can be used
+-    in combination with //tensorboard/compat:tensorflow (to fall back to a stub TF
+-    API implementation if the real one is not available) or with
+-    //tensorboard/compat:no_tensorflow (to force unconditional use of the stub).
+-
+-    Returns:
+-      The root module of a TF-like API, if available.
+-
+-    Raises:
+-      ImportError: if a TF-like API is not available.
+-    """
+-    try:
+-        importlib.import_module("tensorboard.compat.notf")
+-    except ImportError:
+-        try:
+-            import tensorflow
+-
+-            return tensorflow
+-        except ImportError:
+-            pass
+-    return importlib.import_module("tensorboard.compat.tensorflow_stub")
+-
+-
+-@_lazy.lazy_load("tensorboard.compat.tf2")
+-def tf2():
+-    """Provide the root module of a TF-2.0 API for use within TensorBoard.
+-
+-    Returns:
+-      The root module of a TF-2.0 API, if available.
+-
+-    Raises:
+-      ImportError: if a TF-2.0 API is not available.
+-    """
+-    # Resolve the lazy `tf` compat API from earlier in this file and try to find
+-    # tf.compat.v2. Don't check tf.__version__ since this is not always reliable
+-    # if TF was built with tf_api_version!=2.
+-    if hasattr(tf, "compat") and hasattr(tf.compat, "v2"):
+-        return tf.compat.v2
+-    raise ImportError("cannot import tensorflow 2.0 API")
+diff --git a/tensorboard/summary/__init__.py b/tensorboard/summary/__init__.py
+index 5e126f637..e69de29bb 100644
+--- a/tensorboard/summary/__init__.py
++++ b/tensorboard/summary/__init__.py
+@@ -1,35 +0,0 @@
+-# Copyright 2018 The TensorFlow Authors. All Rights Reserved.
+-#More--
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+-# You may obtain a copy of the License at
+-#More--
+-#     http://www.apache.org/licenses/LICENSE-2.0
+-#More--
+-# Unless required by applicable law or agreed to in writing, software
+-# distributed under the License is distributed on an "AS IS" BASIS,
+-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-# See the License for the specific language governing permissions and
+-# limitations under the License.
+-# ==============================================================================
+-"""Central API entry point for summary operations.
+-
+-This module exposes summary ops for the standard TensorBoard plugins.
+-"""re--
+-
+-# If the V1 summary API is accessible, load and re-export it here.
+-try:e--
+-    from tensorboard.summary import v1  # noqa: F401
+-except ImportError:
+-    pass
+-
+-# Load the V2 summary API if accessible.
+-try:e--
+-    from tensorboard.summary import v2  # noqa: F401
+-    from tensorboard.summary.v2 import *  # noqa: F401
+-except ImportError:
+-    pass
+-
+-from tensorboard.summary._output import DirectoryOutput  # noqa: F401
+-from tensorboard.summary._output import Output  # noqa: F401
+-from tensorboard.summary._writer import Writer  # noqa: F401

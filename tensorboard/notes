@@ -1,3 +1,33 @@
+root@33b76923ca91:/workspace/tensorboard#
+
+
+docker cp 33b76923ca91:/tmp/tb_bazel_test_all_latest.log tb_bazel_test_all_latest.log
+
+
+
+apt-get update && apt-get install -y dos2unix
+
+
+#
+git clone https://github.com/psamanoelton/tensorboard.git --branch protobuf
+cd tensorboard
+git log -1
+
+
+find /workspace/tensorboard -type f -exec dos2unix {} \;
+
+# Install TB dependencies
+pip install "tensorflow==2.21.0"
+pip install \
+  -r ./tensorboard/pip_package/requirements.txt \
+  -r ./tensorboard/pip_package/requirements_dev.txt
+
+# Match TensorBoard's Bazel-side controlled Python environment, which vendors
+# urllib3 1.26.20 for source builds and CI-like runs.
+pip install --force-reinstall "urllib3==1.26.20" "six>=1.12,<2"
+
+clear
+
 # Show versions for debugging
 python --version
 node --version
@@ -11,28 +41,16 @@ java -version
 which javac
 javac -version
 
-# Install TB dependencies
-pip install "tensorflow==2.21.0"
-pip install \
-  -r ./tensorboard/pip_package/requirements.txt \
-  -r ./tensorboard/pip_package/requirements_dev.txt
-
-# Match TensorBoard's Bazel-side controlled Python environment, which vendors
-# urllib3 1.26.20 for source builds and CI-like runs.
-pip install --force-reinstall "urllib3==1.26.20" "six>=1.12,<2"
-
 # Pip package
 bazel run //tensorboard/pip_package:test_pip_package -- \
   --tf-version "tensorflow==2.21"
 
 # Tests
 bazel test //tensorboard/... --test_output=errors
-bazel test //tensorboard/... --test_output=errors | tee /tmp/tb_bazel_test_all_fresh.log
+bazel test //tensorboard/... --test_output=errors | tee /tmp/tb_bazel_test_all_latest.log
 
-
-bazel test //tensorboard/data/server:update_protos_test --test_output=errors
 bazel run //tensorboard/data/server:update_protos
-
+bazel test //tensorboard/data/server:update_protos_test --test_output=errors
 
 # Build and install pip package locally
 bazel build //tensorboard/pip_package:build_pip_package && \
@@ -61,18 +79,6 @@ writer.close()
 print("TensorBoard write test OK")
 PY
 
-
-docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorboard_p" 023a0c78d10e:/workspace/tensorboard
-
-root@023a0c78d10e:/workspace#
-
-apt-get update && apt-get install -y dos2unix
-find /workspace/tensorboard -type f -exec dos2unix {} \;
-
-
-docker cp 023a0c78d10e:/tmp/tb_bazel_test_all_fresh.log .
-
-
 bazel test --test_output=errors \
 //tensorboard/plugins/text:summary_test \
 //tensorboard/plugins/scalar:summary_test \
@@ -97,3 +103,33 @@ bazel test --test_output=errors \
 //tensorboard/webapp/persistent_settings:karma_test_chromium-local \
 //tensorboard/webapp/settings:karma_test_chromium-local \
 //tensorboard:manager_e2e_test
+
+bazel test //tensorboard/compat:compat_test --test_output=errors
+bazel test //tensorboard:program_test --test_output=errors
+bazel test //tensorboard:manager_e2e_test --test_output=errors
+bazel test --test_output=errors \
+  //tensorboard/backend/event_processing:io_wrapper_test \
+  //tensorboard/backend/event_processing:event_multiplexer_test \
+  //tensorboard/summary/writer:event_file_writer_test \
+  //tensorboard/plugins/scalar:scalars_plugin_test \
+  //tensorboard/plugins/text:text_plugin_test
+
+docker cp 023a0c78d10e:/tmp/tb_bazel_test_all_fresh.log .
+
+
+let me know if you require anything else that could help and feel free to ask anything
+
+
+git -c core.autocrlf=false clone https://github.com/psamanoelton/tensorboard.git --branch protobuf /workspace/tensorboard
+cd /workspace/tensorboard
+
+pip install "tensorflow==2.21.0"
+pip install -r ./tensorboard/pip_package/requirements.txt -r ./tensorboard/pip_package/requirements_dev.txt
+pip install --force-reinstall "urllib3==1.26.20" "six>=1.12,<2"
+
+bazel shutdown
+bazel clean --expunge
+bazel run //tensorboard/data/server:update_protos
+bazel test //tensorboard/compat:compat_test --test_output=errors --cache_test_results=no
+bazel test //tensorboard/... --test_output=errors --keep_going --cache_test_results=no | tee /tmp/tb_bazel_test_all_latest.log
+

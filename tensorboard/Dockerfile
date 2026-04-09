@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libxcomposite1 \
   libxdamage1 \
   libxfixes3 \
+  libxss1 \
   libxkbcommon0 \
   libxshmfence1 \
   libgbm1 \
