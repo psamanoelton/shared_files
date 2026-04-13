@@ -34,15 +34,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-# Python 3.12
-# RUN add-apt-repository -y ppa:deadsnakes/ppa && \
-#     apt-get update && apt-get install -y --no-install-recommends \
-#     python3.12 \
-#     python3.12-dev \
-#     python3.12-venv \
-#     && rm -rf /var/lib/apt/lists/*
+# Python 3.10 to match the CI Bazel build/test jobs.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  python3.10 \
+  python3.10-dev \
+  python3.10-venv \
+  && rm -rf /var/lib/apt/lists/*
 
-RUN python3.12 -m venv /opt/tb-venv
+RUN python3.10 -m venv /opt/tb-venv
 ENV PATH="/opt/tb-venv/bin:${PATH}"
 
 # Keep packaging tools fresh
@@ -97,6 +96,6 @@ WORKDIR /workspace
 
 CMD ["/bin/bash"]
 
-# docker build -t tb-ci-py312 .
-# docker run -it tb-ci-py312
+# docker build -t tb-ci-py310 .
+# docker run -it tb-ci-py310
 # docker system prune -a -f

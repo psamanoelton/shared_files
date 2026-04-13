@@ -133,3 +133,48 @@ bazel run //tensorboard/data/server:update_protos
 bazel test //tensorboard/compat:compat_test --test_output=errors --cache_test_results=no
 bazel test //tensorboard/... --test_output=errors --keep_going --cache_test_results=no | tee /tmp/tb_bazel_test_all_latest.log
 
+
+##################################
+
+python -m pip install -U pip
+pip install tf-nightly
+pip install \
+  -r ./tensorboard/pip_package/requirements.txt \
+  -r ./tensorboard/pip_package/requirements_dev.txt
+
+export pythonLocation=/opt/tb-venv
+py_abi=python3.10
+mkdir -p "${pythonLocation}/include"
+if [ ! -f "${pythonLocation}/include/${py_abi}/Python.h" ]; then
+  rm -rf "${pythonLocation}/include/${py_abi}"
+  ln -s "/usr/include/${py_abi}" "${pythonLocation}/include/${py_abi}"
+fi
+test -f "${pythonLocation}/include/${py_abi}/Python.h"
+
+bazel fetch //tensorboard/...
+( set -o pipefail; bazel build //tensorboard/... |& grep -v 'external/com_google_protobuf/python: warning: directory' |& grep -v 'INFO: From ProtoCompile ' )
+bazel test //tensorboard/... --test_output=errors --keep_going --cache_test_results=no
+bazel run //tensorboard/pip_package:test_pip_package -- --tf-version tf-nightly
+
+#####################
+
+python -m pip install -U pip
+pip install \
+  -r ./tensorboard/pip_package/requirements.txt \
+  -r ./tensorboard/pip_package/requirements_dev.txt
+
+export pythonLocation=/opt/tb-venv
+py_abi=python3.10
+mkdir -p "${pythonLocation}/include"
+if [ ! -f "${pythonLocation}/include/${py_abi}/Python.h" ]; then
+  rm -rf "${pythonLocation}/include/${py_abi}"
+  ln -s "/usr/include/${py_abi}" "${pythonLocation}/include/${py_abi}"
+fi
+test -f "${pythonLocation}/include/${py_abi}/Python.h"
+
+bazel fetch //tensorboard/...
+( set -o pipefail; bazel build //tensorboard/... |& grep -v 'external/com_google_protobuf/python: warning: directory' |& grep -v 'INFO: From ProtoCompile ' )
+bazel test //tensorboard/... --test_tag_filters="support_notf" --test_output=errors --keep_going --cache_test_results=no
+bazel run //tensorboard/pip_package:test_pip_package -- --tf-version notf
+
+

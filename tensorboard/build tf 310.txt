@@ -1,0 +1,140 @@
+Run ( set -o pipefail;
+  ( set -o pipefail;
+    bazel build //tensorboard/... |&\
+    grep -v 'external/com_google_protobuf/python: warning: directory' |&\
+    grep -v 'INFO: From ProtoCompile ' )
+  shell: bash --noprofile --norc -e -o pipefail {0}
+  env:
+    BAZEL_VERSION: 7.7.0
+    BAZEL_SHA256SUM: fe7e799cbc9140f986b063e06800a3d4c790525075c877d00a7112669824acbf
+    BUILDTOOLS_VERSION: 3.0.0
+    BUILDIFIER_SHA256SUM: e92a6793c7134c5431c58fbc34700664f101e5c9b1c1fcd93b97978e8b7f88db
+    BUILDOZER_SHA256SUM: 3d58a0b6972e4535718cdd6c12778170ea7382de7c75bc3728f5719437ffb84d
+    TENSORFLOW_VERSION: tf-nightly
+    pythonLocation: /__w/_tool/Python/3.10.20/x64
+    PKG_CONFIG_PATH: /__w/_tool/Python/3.10.20/x64/lib/pkgconfig
+    Python_ROOT_DIR: /__w/_tool/Python/3.10.20/x64
+    Python2_ROOT_DIR: /__w/_tool/Python/3.10.20/x64
+    Python3_ROOT_DIR: /__w/_tool/Python/3.10.20/x64
+    LD_LIBRARY_PATH: /__w/_tool/Python/3.10.20/x64/lib
+Run '/home/runner/k8s/index.js'
+  shell: /home/runner/externals/node20/bin/node {0}
+using script executor
+WARNING: Option 'local_cpu_resources' is deprecated: --local_cpu_resources is deprecated, please use --local_resources=cpu= instead.
+WARNING: Option 'local_ram_resources' is deprecated: --local_ram_resources is deprecated, please use --local_resources=memory= instead.
+INFO: Invocation ID: 1e53a9f5-277f-494d-9927-9d8e8ea034a7
+Computing main repo mapping: 
+WARNING: Option 'local_cpu_resources' is deprecated: --local_cpu_resources is deprecated, please use --local_resources=cpu= instead.
+WARNING: Option 'local_ram_resources' is deprecated: --local_ram_resources is deprecated, please use --local_resources=memory= instead.
+Loading: 
+Loading: 0 packages loaded
+WARNING: Build options --incompatible_default_to_explicit_init_py and --test_env have changed, discarding analysis cache (this can be expensive, see https://bazel.build/advanced/performance/iteration-speed).
+Analyzing: 1397 targets (0 packages loaded, 0 targets configured)
+Analyzing: 1397 targets (0 packages loaded, 1936 targets configured)
+
+WARNING: Remote Cache: 403 Forbidden
+<?xml version='1.0' encoding='UTF-8'?><Error><Code>AccessDenied</Code><Message>Access denied.</Message><Details>Anonymous caller does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).</Details></Error>
+com.google.devtools.build.lib.remote.http.HttpException: 403 Forbidden
+<?xml version='1.0' encoding='UTF-8'?><Error><Code>AccessDenied</Code><Message>Access denied.</Message><Details>Anonymous caller does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist).</Details></Error>
+	at com.google.devtools.build.lib.remote.http.HttpDownloadHandler.channelRead0(HttpDownloadHandler.java:134)
+	at com.google.devtools.build.lib.remote.http.HttpDownloadHandler.channelRead0(HttpDownloadHandler.java:43)
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:99)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.fireChannelRead(CombinedChannelDuplexHandler.java:436)
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:346)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:318)
+	at io.netty.channel.CombinedChannelDuplexHandler.channelRead(CombinedChannelDuplexHandler.java:251)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:442)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1383)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1246)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1295)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:529)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:468)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:290)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:286)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:442)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:166)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Analyzing: 1397 targets (0 packages loaded, 56414 targets configured)
+[413 / 512] Creating runfiles tree bazel-out/k8-fastbuild/bin/tensorboard/tools/inline_file_content.runfiles; 0s local ... (12 actions, 8 running)
+WARNING: /__w/tensorboard/tensorboard/tensorboard/data/server/BUILD:154:8: in genrule rule //tensorboard/data/server:gen_protos: target '//tensorboard/data/server:gen_protos' depends on deprecated target '@@com_google_protobuf//:well_known_protos': Prefer :well_known_type_protos instead.
+Analyzing: 1397 targets (0 packages loaded, 57890 targets configured)
+[717 / 1,685] Creating runfiles tree bazel-out/k8-fastbuild/bin/tensorboard/defs/tsc_wrapped_with_angular.sh.runfiles; 0s local ... (6 actions, 4 running)
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:285:10: input '_/sass/node_modules/source-map-js' of @@build_bazel_rules_sass_deps//:node_modules/source-map-js is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:205:10: input '_/sass/node_modules/is-number' of @@build_bazel_rules_sass_deps//:node_modules/is-number is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:93:10: input '_/sass/node_modules/fill-range' of @@build_bazel_rules_sass_deps//:node_modules/fill-range is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:109:10: input '_/sass/node_modules/glob-parent' of @@build_bazel_rules_sass_deps//:node_modules/glob-parent is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:61:10: input '_/sass/node_modules/braces' of @@build_bazel_rules_sass_deps//:node_modules/braces is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:173:10: input '_/sass/node_modules/is-extglob' of @@build_bazel_rules_sass_deps//:node_modules/is-extglob is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:301:10: input '_/sass/node_modules/to-regex-range' of @@build_bazel_rules_sass_deps//:node_modules/to-regex-range is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:13:10: input '_/sass/node_modules/@bazel/worker' of @@build_bazel_rules_sass_deps//:node_modules/@bazel/worker is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:269:10: input '_/sass/node_modules/sass' of @@build_bazel_rules_sass_deps//:node_modules/sass is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:141:10: input '_/sass/node_modules/immutable' of @@build_bazel_rules_sass_deps//:node_modules/immutable is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:29:10: input '_/sass/node_modules/anymatch' of @@build_bazel_rules_sass_deps//:node_modules/anymatch is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:77:10: input '_/sass/node_modules/chokidar' of @@build_bazel_rules_sass_deps//:node_modules/chokidar is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:221:10: input '_/sass/node_modules/normalize-path' of @@build_bazel_rules_sass_deps//:node_modules/normalize-path is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:237:10: input '_/sass/node_modules/picomatch' of @@build_bazel_rules_sass_deps//:node_modules/picomatch is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:253:10: input '_/sass/node_modules/readdirp' of @@build_bazel_rules_sass_deps//:node_modules/readdirp is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:189:10: input '_/sass/node_modules/is-glob' of @@build_bazel_rules_sass_deps//:node_modules/is-glob is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:125:10: input '_/sass/node_modules/google-protobuf' of @@build_bazel_rules_sass_deps//:node_modules/google-protobuf is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:45:10: input '_/sass/node_modules/binary-extensions' of @@build_bazel_rules_sass_deps//:node_modules/binary-extensions is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_sass_deps/BUILD.bazel:157:10: input '_/sass/node_modules/is-binary-path' of @@build_bazel_rules_sass_deps//:node_modules/is-binary-path is a directory; dependency checking of directories is unsound
+WARNING: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/esbuild_npm/BUILD.bazel:13:10: input '_/toolchains/esbuild/node_modules/esbuild' of @@esbuild_npm//:node_modules/esbuild is a directory; dependency checking of directories is unsound
+Analyzing: 1397 targets (0 packages loaded, 58085 targets configured)
+[1,470 / 4,102] [Sched] Compiling util/process_wrapper/system_posix.cc [for tool] ... (26 actions, 6 running)
+Analyzing: 1397 targets (0 packages loaded, 58581 targets configured)
+[1,857 / 4,687] [Sched] Compiling upb/mem/alloc.c [for tool] ... (28 actions, 5 running)
+Analyzing: 1397 targets (0 packages loaded, 58650 targets configured)
+[2,101 / 4,906] [Sched] SassCompiler tensorboard/webapp/widgets/line_chart_v2/sub_view/line_chart_interactive_view.css ... (31 actions, 2 running)
+INFO: Analyzed 1397 targets (0 packages loaded, 58674 targets configured).
+[2,111 / 4,933] [Sched] SassCompiler tensorboard/webapp/widgets/line_chart_v2/sub_view/line_chart_interactive_view.css ... (32 actions, 3 running)
+[2,215 / 5,007] [Sched] Compiling absl/debugging/internal/utf8_for_code_point.cc ... (31 actions, 2 running)
+[2,218 / 5,012] [Sched] Compiling absl/debugging/internal/utf8_for_code_point.cc; 4s ... (32 actions, 2 running)
+[2,230 / 5,019] [Sched] Extracting interface for jar external/com_google_errorprone_error_prone_annotations/error_prone_annotations-2.23.0.jar [for tool]; 5s ... (32 actions, 2 running)
+ERROR: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/com_google_protobuf/python/BUILD.bazel:14:14: Compiling python/google/protobuf/internal/api_implementation.cc [for tool] failed: (Exit 1): gcc failed: error executing CppCompile command (from target @@com_google_protobuf//python:google/protobuf/internal/_api_implementation.so) 
+  (cd /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/sandbox/processwrapper-sandbox/60/execroot/org_tensorflow_tensorboard && \
+  exec env - \
+    DOCKER_HOST_CACHEBUSTER=1776092981605414889 \
+    LD_LIBRARY_PATH=/__w/_tool/Python/3.10.20/x64/lib \
+    PATH=/__w/_tool/Python/3.10.20/x64/bin:/__w/_tool/Python/3.10.20/x64:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/google-cloud-sdk/bin/:/usr/local/cuda/bin/ \
+    *** \
+  /usr/bin/gcc -U_FORTIFY_SOURCE -fstack-protector -Wall -Wunused-but-set-parameter -Wno-free-nonheap-object -fno-omit-frame-pointer -g0 -O2 '-D_FORTIFY_SOURCE=1' -DNDEBUG -ffunction-sections -fdata-sections '-std=c++14' -MD -MF bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/python/_objs/google/protobuf/internal/_api_implementation.so/api_implementation.pic.d '-frandom-seed=bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/python/_objs/google/protobuf/internal/_api_implementation.so/api_implementation.pic.o' -fPIC -iquote external/com_google_protobuf -iquote bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf -iquote external/system_python -iquote bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/system_python -isystem external/system_python/python -isystem bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/system_python/python -g0 -g0 '-std=c++17' -Wno-sign-compare -DPYTHON_PROTO2_CPP_IMPL_V2 -fno-canonical-system-headers -Wno-builtin-macro-redefined '-D__DATE__="redacted"' '-D__TIMESTAMP__="redacted"' '-D__TIME__="redacted"' -c external/com_google_protobuf/python/google/protobuf/internal/api_implementation.cc -o bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/python/_objs/google/protobuf/internal/_api_implementation.so/api_implementation.pic.o)
+# Configuration: 3ece892774bbf9e643c91298773385acd33cc8a57f19c1c7038456494ab42909
+# Execution platform: @@internal_platforms_do_not_use//host:host
+
+Use --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging
+external/com_google_protobuf/python/google/protobuf/internal/api_implementation.cc:8:10: fatal error: Python.h: No such file or directory
+    8 | #include <Python.h>
+      |          ^~~~~~~~~~
+compilation terminated.
+[2,267 / 5,019] checking cached actions
+INFO: Elapsed time: 11.660s, Critical Path: 7.29s
+INFO: 2267 processes: 2209 internal, 22 local, 36 processwrapper-sandbox.
+ERROR: Build did NOT complete successfully
+Error: Error: ScriptExecutorError when trying to execute: "Error: Job failed with exit code 1."
+Error: Process completed with exit code 1.
+Error: Executing the custom container implementation failed. Please contact your self hosted runner administrator.
