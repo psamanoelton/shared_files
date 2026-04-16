@@ -53,19 +53,19 @@ WORKDIR /workspace
 # --------------------------------------------------------------------
 # Clone + build + install TFQ (your branch) inside the tfq env
 # --------------------------------------------------------------------
-# RUN git clone https://github.com/psamanoelton/quantum.git && \
-#     cd quantum && \
-#     git checkout feature/tf218_support && \
-#     source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tfq && \
-#     pip install --no-cache-dir -r requirements.txt && \
-#     ./configure.sh --python="$(which python)" && \
-#     bazel clean --expunge && \
-#     bazel build -c opt \
-#       --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
-#       --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
-#       release:build_pip_package && \
-#     bazel-bin/release/build_pip_package /tmp/tfquantum && \
-#     pip install --no-cache-dir /tmp/tfquantum/*.whl
+RUN git clone https://github.com/psamanoelton/quantum.git && \
+    cd quantum && \
+    git checkout feature/tf218_support && \
+    source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tfq && \
+    pip install --no-cache-dir -r requirements.txt && \
+    ./configure.sh --python="$(which python)" && \
+    bazel clean --expunge && \
+    bazel build -c opt \
+      --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
+      --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
+      release:build_pip_package && \
+    bazel-bin/release/build_pip_package /tmp/tfquantum && \
+    pip install --no-cache-dir /tmp/tfquantum/*.whl
 
 # --------------------------------------------------------------------
 # Quick runtime check (fail-fast during build)
@@ -89,6 +89,10 @@ WORKDIR /workspace
 
 # docker build -t tfq-tf:18 .
 # docker run -it tfq-tf:18
+# docker run -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p":/workspace/quantum tfq-tf:18
+
+# sed -i 's/\r$//' release/build_pip_package.sh scripts/*.sh configure.sh || true
+
 # docker exec -it 2c1aa22ae7ab /bin/bash
 
 # docker system prune -a -f
@@ -224,52 +228,21 @@ WORKDIR /workspace
 # conda activate tfq
 # cd quantum
 
-# git clone https://github.com/psamanoelton/quantum.git && \
-#     cd quantum && \
-#     git checkout feature/tf218_support && \
-#     pip install --no-cache-dir -r requirements.txt && \
-#     ./configure.sh --python="$(which python)" && \
-#     bazel clean --expunge && \
-#     bazel build -c opt \
-#       --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
-#       --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
-#       release:build_pip_package && \
-#     bazel-bin/release/build_pip_package /tmp/tfquantum && \
-#     pip install --no-cache-dir /tmp/tfquantum/*.whl
-# ./scripts/test_all.sh
-# ./scripts/ci_validate_tutorials.sh
+git clone https://github.com/psamanoelton/quantum.git && \
+    cd quantum && \
+    git checkout feature/tf218_support && \
+    pip install --no-cache-dir -r requirements.txt && \
+    ./configure.sh --python="$(which python)" && \
+    bazel clean --expunge && \
+    bazel build -c opt \
+      --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
+      --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
+      release:build_pip_package && \
+    bazel-bin/release/build_pip_package /tmp/tfquantum && \
+    pip install --no-cache-dir /tmp/tfquantum/*.whl
+./scripts/test_all.sh
+./scripts/ci_validate_tutorials.sh
 
-# rm scripts/test_tutorials.py
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\scripts\test_tutorials.py" f719201a63fb:/workspace/quantum/scripts/test_tutorials.py
-
-# rm scripts/ci_validate_tutorials.sh
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\scripts\ci_validate_tutorials.sh" f719201a63fb:/workspace/quantum/scripts/ci_validate_tutorials.sh
-# sed -i 's/\r$//' /workspace/quantum/scripts/ci_validate_tutorials.sh
-
-# rm configure.sh
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\configure.sh" f719201a63fb:/workspace/quantum/configure.sh
-# sed -i 's/\r$//' /workspace/quantum/configure.sh
-
-# rm release/build_pip_package.sh
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\release\build_pip_package.sh" f719201a63fb:/workspace/quantum/release/build_pip_package.sh
-
-# rm WORKSPACE
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\WORKSPACE" f719201a63fb:/workspace/quantum/WORKSPACE
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum\release\setup.py" 2c1aa22ae7ab:/workspace/quantum/release/setup.py
-# C:\Users\Pablo Samano\Desktop\Rivian\google\quantum\release\setup.py
-
-
-# rm release/setup.py
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_17" f248539d39fd:/workspace/quantum
-
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_17" f248539d39fd:/workspace/quantum
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_17\WORKSPACE" f248539d39fd:/workspace/quantum/WORKSPACE
-# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_17\requirements.in" f248539d39fd:/workspace/quantum/requirements.in
-
-# C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_17\release\setup.py
-
-
-# pylint -v scripts/test_tutorials.py tensorflow_quantum/__init__.py |& tee ./pylint.out
 
 # python -m yapf --style=google -i ^
 #   release\setup.py scripts\test_tutorials.py tensorflow_quantum\__init__.py
@@ -282,18 +255,18 @@ WORKDIR /workspace
 
 #### Conda refresh env ###
 
-# conda activate base
-# conda env remove --name tfq -y
-# conda create --name tfq python=3.10 -y
-# conda activate tfq
+conda activate base
+conda env remove --name tfq -y
+conda create --name tfq python=3.10 -y
+conda activate tfq
 
 
 # 3.11
-# conda activate base
-# conda create --name tfq311 python=3.11 -y
-# conda activate tfq311
-# bazel clean --expunge
-# rm -rf /tmp/tfquantum
+conda activate base
+conda create --name tfq311 python=3.11 -y
+conda activate tfq311
+bazel clean --expunge
+rm -rf /tmp/tfquantum
 
 # 3.12
 # conda activate base

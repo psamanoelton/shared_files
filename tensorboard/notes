@@ -1,14 +1,3 @@
-root@33b76923ca91:/workspace/tensorboard#
-
-
-docker cp 33b76923ca91:/tmp/tb_bazel_test_all_latest.log tb_bazel_test_all_latest.log
-
-
-
-apt-get update && apt-get install -y dos2unix
-
-
-#
 git clone https://github.com/psamanoelton/tensorboard.git --branch protobuf
 cd tensorboard
 git log -1
@@ -131,14 +120,13 @@ bazel test //tensorboard/... --test_tag_filters="support_notf" --test_output=err
 bazel run //tensorboard/pip_package:test_pip_package -- --tf-version notf
 
 
-#####################
-# Container validation checklist before pushing CI-related changes
+#################################################
+# Container validation checklist like in the CI #
+#################################################
 
 # 1) Start from a fresh clone in the container
 git -c core.autocrlf=false clone https://github.com/psamanoelton/tensorboard.git --branch protobuf /workspace/tensorboard
 cd /workspace/tensorboard
-git status
-git rev-parse HEAD
 
 # 2) Install Bazel-side Python deps
 python -m pip install -U pip
@@ -150,10 +138,7 @@ pip install \
 pip install tf-nightly
 pip uninstall -y tensorboard tb-nightly || true
 
-# 4) Keep generated Rust proto artifact in sync for local validation
-bazel run //tensorboard/data/server:update_protos
-
-# 5) Ensure Python headers are where Bazel's system_python repo expects them
+# 4) Ensure Python headers are where Bazel's system_python repo expects them
 export pythonLocation=/opt/tb-venv
 py_abi=python3.10
 mkdir -p "${pythonLocation}/include"
@@ -163,13 +148,13 @@ if [ ! -f "${pythonLocation}/include/${py_abi}/Python.h" ]; then
 fi
 test -f "${pythonLocation}/include/${py_abi}/Python.h"
 
-# 6) Fast failure checks for the current CI blocker surface
+# 5) Fast failure checks for the current CI blocker surface
 bazel shutdown
 bazel clean --expunge
 bazel fetch //tensorboard/...
 bazel build //tensorboard/... --nobuild
 
-# 7) Full TF validation path
+# 6) Full TF validation path
 ( set -o pipefail; bazel build //tensorboard/... |& grep -v 'external/com_google_protobuf/python: warning: directory' |& grep -v 'INFO: From ProtoCompile ' )
 bazel test //tensorboard/... --test_output=errors --keep_going --cache_test_results=no
 bazel build //tensorboard/pip_package:test_pip_package
@@ -179,7 +164,7 @@ bazel test //tensorboard/summary/writer:event_file_writer_s3_test
 bazel test //tensorboard/compat/tensorflow_stub:gfile_fsspec_test
 bazel test //tensorboard/summary/writer:event_file_writer_fsspec_test
 
-# 8) Non-TF validation path
+# 7) Non-TF validation path
 python -m pip install -U pip
 pip install \
   -r ./tensorboard/pip_package/requirements.txt \
