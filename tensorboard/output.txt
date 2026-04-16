@@ -1,16 +1,75 @@
-root@1f626eb38ec0:/workspace/tensorboard# python --version
-Python 3.10.12
-root@1f626eb38ec0:/workspace/tensorboard# pip --version
-pip 26.0.1 from /opt/tb-venv/lib/python3.10/site-packages/pip (python 3.10)
-root@1f626eb38ec0:/workspace/tensorboard# bazel --version
-2026/04/13 20:05:53 Downloading https://releases.bazel.build/7.7.0/release/bazel-7.7.0-linux-x86_64...
-Downloading: 54 MB out of 54 MB (100%)
-bazel 7.7.0
-root@1f626eb38ec0:/workspace/tensorboard# java -version
-openjdk version "11.0.30" 2026-01-20
-OpenJDK Runtime Environment (build 11.0.30+7-post-Ubuntu-1ubuntu122.04)
-OpenJDK 64-Bit Server VM (build 11.0.30+7-post-Ubuntu-1ubuntu122.04, mixed mode, sharing)
-root@1f626eb38ec0:/workspace/tensorboard# node --version
-v16.20.2
-root@1f626eb38ec0:/workspace/tensorboard# yarn --version
-1.22.22
+Run bazel fetch //tensorboard/...
+  bazel fetch //tensorboard/...
+  shell: bash --noprofile --norc -e -o pipefail {0}
+  env:
+    BAZEL_VERSION: 7.7.0
+    BAZEL_SHA256SUM: fe7e799cbc9140f986b063e06800a3d4c790525075c877d00a7112669824acbf
+    BUILDTOOLS_VERSION: 3.0.0
+    BUILDIFIER_SHA256SUM: e92a6793c7134c5431c58fbc34700664f101e5c9b1c1fcd93b97978e8b7f88db
+    BUILDOZER_SHA256SUM: 3d58a0b6972e4535718cdd6c12778170ea7382de7c75bc3728f5719437ffb84d
+    TENSORFLOW_VERSION: tf-nightly
+    pythonLocation: /__w/_tool/Python/3.10.20/x64
+    PKG_CONFIG_PATH: /__w/_tool/Python/3.10.20/x64/lib/pkgconfig
+    Python_ROOT_DIR: /__w/_tool/Python/3.10.20/x64
+    Python2_ROOT_DIR: /__w/_tool/Python/3.10.20/x64
+    Python3_ROOT_DIR: /__w/_tool/Python/3.10.20/x64
+    LD_LIBRARY_PATH: /__w/_tool/Python/3.10.20/x64/lib
+Run '/home/runner/k8s/index.js'
+  shell: /home/runner/externals/node20/bin/node {0}
+using script executor
+Extracting Bazel installation...
+Starting local Bazel server and connecting to it...
+WARNING: Option 'local_cpu_resources' is deprecated: --local_cpu_resources is deprecated, please use --local_resources=cpu= instead.
+WARNING: Option 'local_ram_resources' is deprecated: --local_ram_resources is deprecated, please use --local_resources=memory= instead.
+INFO: Invocation ID: 2f3f7589-cc80-4f43-a25d-68bcb72497ae
+Computing main repo mapping: 
+Computing main repo mapping: 
+WARNING: Download from http://mirror.tensorflow.org/github.com/bazelbuild/rules_go/releases/download/v0.41.0/rules_go-v0.41.0.zip failed: class java.io.FileNotFoundException GET returned 404 Not Found
+WARNING: Download from http://mirror.tensorflow.org/github.com/bazelbuild/bazel-gazelle/releases/download/v0.32.0/bazel-gazelle-v0.32.0.tar.gz failed: class java.io.FileNotFoundException GET returned 404 Not Found
+Computing main repo mapping: 
+Computing main repo mapping: 
+WARNING: Download from https://storage.googleapis.com/mirror.tensorflow.org/github.com/bazelbuild/rules_java/archive/refs/tags/8.6.1.tar.gz failed: class java.io.FileNotFoundException GET returned 404 Not Found
+Computing main repo mapping: 
+Computing main repo mapping: 
+WARNING: Option 'local_cpu_resources' is deprecated: --local_cpu_resources is deprecated, please use --local_resources=cpu= instead.
+WARNING: Option 'local_ram_resources' is deprecated: --local_ram_resources is deprecated, please use --local_resources=memory= instead.
+Loading: 
+Loading: 0 packages loaded
+Loading: 48 packages loaded
+    currently loading: tensorboard/webapp ... (174 packages)
+Loading: 48 packages loaded
+    currently loading: tensorboard/webapp ... (174 packages)
+Loading: 48 packages loaded
+    currently loading: tensorboard/webapp ... (174 packages)
+Loading: 48 packages loaded
+    currently loading: tensorboard/webapp ... (174 packages)
+INFO: Repository npm instantiated at:
+  /__w/tensorboard/tensorboard/WORKSPACE:219:13: in <toplevel>
+  /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_nodejs/index.bzl:83:18: in yarn_install
+Repository rule yarn_install defined at:
+  /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_nodejs/internal/npm_install/npm_install.bzl:1002:31: in <toplevel>
+ERROR: /__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_nodejs/internal/npm_install/npm_install.bzl:455:21: An error occurred during the fetch of repository 'npm':
+   Traceback (most recent call last):
+	File "/__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_nodejs/internal/npm_install/npm_install.bzl", line 996, column 32, in _yarn_install_impl
+		_apply_post_install_patches(repository_ctx)
+	File "/__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_nodejs/internal/npm_install/npm_install.bzl", line 397, column 19, in _apply_post_install_patches
+		_apply_patches(repository_ctx, working_directory, repository_ctx.attr.post_install_patches, marker_file)
+	File "/__w/.cache/bazel/bazel/_bazel_root/2af0eef394f7fb4a7f6ed719525bcce7/external/build_bazel_rules_nodejs/internal/npm_install/npm_install.bzl", line 455, column 21, in _apply_patches
+		fail("Error applying patch %s in %s:\n%s%s" % (str(patch_file), working_directory, st.stderr, st.stdout))
+Error in fail: Error applying patch @//patches:@angular+build-tooling+0.0.0-7d103b83a07f132629592fc9918ce17d42a5e382.patch in _:
+bash: line 1: /__w/tensorboard/tensorboard/patches/@angular+build-tooling+0.0.0-7d103b83a07f132629592fc9918ce17d42a5e382.patch: No such file or directory
+Loading: 48 packages loaded
+    currently loading: tensorboard/webapp ... (174 packages)
+WARNING: Target pattern parsing failed.
+ERROR: Skipping '//tensorboard/...': error loading package under directory 'tensorboard': no such package '@@npm//@bazel/concatjs': Error applying patch @//patches:@angular+build-tooling+0.0.0-7d103b83a07f132629592fc9918ce17d42a5e382.patch in _:
+bash: line 1: /__w/tensorboard/tensorboard/patches/@angular+build-tooling+0.0.0-7d103b83a07f132629592fc9918ce17d42a5e382.patch: No such file or directory
+ERROR: error loading package under directory 'tensorboard': no such package '@@npm//@bazel/concatjs': Error applying patch @//patches:@angular+build-tooling+0.0.0-7d103b83a07f132629592fc9918ce17d42a5e382.patch in _:
+bash: line 1: /__w/tensorboard/tensorboard/patches/@angular+build-tooling+0.0.0-7d103b83a07f132629592fc9918ce17d42a5e382.patch: No such file or directory
+INFO: Elapsed time: 85.910s
+INFO: 0 processes.
+ERROR: Build did NOT complete successfully
+ERROR: Fetching some target dependencies failed with errors: no such package '@@npm//@bazel/concatjs': Error applying patch @//patches:@angular+build-tooling+0.0.0-7d103b83a07f132629592fc9918ce17d42a5e382.patch in _:
+bash: line 1: /__w/tensorboard/tensorboard/patches/@angular+build-tooling+0.0.0-7d103b83a07f132629592fc9918ce17d42a5e382.patch: No such file or directory
+Error: Error: ScriptExecutorError when trying to execute: "Error: Job failed with exit code 2."
+Error: Process completed with exit code 1.
+Error: Executing the custom container implementation failed. Please contact your self hosted runner administrator.

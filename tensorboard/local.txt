@@ -1,0 +1,138 @@
+root@0e581c8e7a98:/workspace/tensorboard# bazel test //tensorboard/compat/tensorflow_stub:gfile_s3_test
+Starting local Bazel server and connecting to it...
+DEBUG: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_nodejs/index.bzl:65:14: node_repository attribute not set and no repository named 'nodejs_toolchains' exists; installing default node
+DEBUG: /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/external/build_bazel_rules_nodejs/index.bzl:73:14: yarn_install#yarn attribute not set and no repository named 'yarn' exists; installing default yarn
+INFO: Analyzed target //tensorboard/compat/tensorflow_stub:gfile_s3_test (146 packages loaded, 2658 targets configured).
+INFO: From Compiling src/google/protobuf/compiler/command_line_interface.cc [for tool]:
+In file included from /usr/include/c++/11/string:40,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/compiler/_virtual_includes/command_line_interface/google/protobuf/compiler/command_line_interface.h:21,
+                 from external/com_google_protobuf/src/google/protobuf/compiler/command_line_interface.cc:12:
+In static member function 'static constexpr int std::char_traits<char>::compare(const char_type*, const char_type*, std::size_t)',
+    inlined from 'constexpr int std::basic_string_view<_CharT, _Traits>::compare(std::basic_string_view<_CharT, _Traits>) const [with _CharT = char; _Traits = std::char_traits<char>]' at /usr/include/c++/11/string_view:315:34,
+    inlined from 'constexpr bool std::operator==(std::basic_string_view<_CharT, _Traits>, std::basic_string_view<_CharT, _Traits>) [with _CharT = char; _Traits = std::char_traits<char>]' at /usr/include/c++/11/string_view:537:53,
+    inlined from 'constexpr bool absl::lts_20250127::EndsWith(absl::lts_20250127::string_view, absl::lts_20250127::string_view)' at external/com_google_absl/absl/strings/match.h:83:25:
+/usr/include/c++/11/bits/char_traits.h:389:32: warning: 'int __builtin_memcmp_eq(const void*, const void*, long unsigned int)' specified bound 18446744073709551615 exceeds maximum object size 9223372036854775807 [-Wstringop-overread]
+  389 |         return __builtin_memcmp(__s1, __s2, __n);
+      |                ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/bits/basic_string.h:48,
+                 from /usr/include/c++/11/string:55,
+                 from bazel-out/k8-opt-exec-ST-a828a81199fe/bin/external/com_google_protobuf/src/google/protobuf/compiler/_virtual_includes/command_line_interface/google/protobuf/compiler/command_line_interface.h:21,
+                 from external/com_google_protobuf/src/google/protobuf/compiler/command_line_interface.cc:12:
+/usr/include/c++/11/string_view: In function 'constexpr bool absl::lts_20250127::EndsWith(absl::lts_20250127::string_view, absl::lts_20250127::string_view)':
+/usr/include/c++/11/string_view:308:34: note: source object allocated here
+  308 |         return basic_string_view{_M_str + __pos, __rlen};
+      |                                  ^~~~~~
+FAIL: //tensorboard/compat/tensorflow_stub:gfile_s3_test (see /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/testlogs/tensorboard/compat/tensorflow_stub/gfile_s3_test/test.log)
+INFO: From Testing //tensorboard/compat/tensorflow_stub:gfile_s3_test:
+==================== Test output for //tensorboard/compat/tensorflow_stub:gfile_s3_test:
+Traceback (most recent call last):
+  File "/root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/sandbox/processwrapper-sandbox/269/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/bin/tensorboard/compat/tensorflow_stub/gfile_s3_test.runfiles/org_tensorflow_tensorboard/tensorboard/compat/tensorflow_stub/io/gfile_s3_test.py", line 17, in <module>
+    import boto3
+  File "/opt/tb-venv/lib/python3.10/site-packages/boto3/__init__.py", line 16, in <module>
+    from boto3.session import Session
+  File "/opt/tb-venv/lib/python3.10/site-packages/boto3/session.py", line 17, in <module>
+    import botocore.session
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/session.py", line 29, in <module>
+    import botocore.configloader
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/configloader.py", line 19, in <module>
+    from botocore.compat import six
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/compat.py", line 25, in <module>
+    from botocore.exceptions import MD5UnavailableError
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/exceptions.py", line 15, in <module>
+    from botocore.vendored import requests
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/__init__.py", line 58, in <module>
+    from . import utils
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/utils.py", line 26, in <module>
+    from .compat import parse_http_list as _parse_list_header
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/compat.py", line 7, in <module>
+    from .packages import chardet
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/packages/__init__.py", line 3, in <module>
+    from . import urllib3
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/packages/urllib3/__init__.py", line 10, in <module>
+    from .connectionpool import (
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/packages/urllib3/connectionpool.py", line 38, in <module>
+    from .response import HTTPResponse
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/packages/urllib3/response.py", line 9, in <module>
+    from ._collections import HTTPHeaderDict
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/packages/urllib3/_collections.py", line 1, in <module>
+    from collections import Mapping, MutableMapping
+ImportError: cannot import name 'Mapping' from 'collections' (/usr/lib/python3.10/collections/__init__.py)
+================================================================================
+INFO: Found 1 test target...
+Target //tensorboard/compat/tensorflow_stub:gfile_s3_test up-to-date:
+  bazel-bin/tensorboard/compat/tensorflow_stub/gfile_s3_test
+INFO: Elapsed time: 160.723s, Critical Path: 38.37s
+INFO: 275 processes: 5 internal, 270 processwrapper-sandbox.
+INFO: Build completed, 1 test FAILED, 275 total actions
+//tensorboard/compat/tensorflow_stub:gfile_s3_test                       FAILED in 0.2s
+  /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/testlogs/tensorboard/compat/tensorflow_stub/gfile_s3_test/test.log
+
+Executed 1 out of 1 test: 1 fails locally.
+root@0e581c8e7a98:/workspace/tensorboard# bazel test //tensorboard/summary/writer:event_file_writer_s3_test
+INFO: Analyzed target //tensorboard/summary/writer:event_file_writer_s3_test (2 packages loaded, 11 targets configured).
+FAIL: //tensorboard/summary/writer:event_file_writer_s3_test (see /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/testlogs/tensorboard/summary/writer/event_file_writer_s3_test/test.log)
+INFO: From Testing //tensorboard/summary/writer:event_file_writer_s3_test:
+==================== Test output for //tensorboard/summary/writer:event_file_writer_s3_test:
+Traceback (most recent call last):
+  File "/root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/sandbox/processwrapper-sandbox/271/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/bin/tensorboard/summary/writer/event_file_writer_s3_test.runfiles/org_tensorflow_tensorboard/tensorboard/summary/writer/event_file_writer_s3_test.py", line 19, in <module>
+    import boto3
+  File "/opt/tb-venv/lib/python3.10/site-packages/boto3/__init__.py", line 16, in <module>
+    from boto3.session import Session
+  File "/opt/tb-venv/lib/python3.10/site-packages/boto3/session.py", line 17, in <module>
+    import botocore.session
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/session.py", line 29, in <module>
+    import botocore.configloader
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/configloader.py", line 19, in <module>
+    from botocore.compat import six
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/compat.py", line 25, in <module>
+    from botocore.exceptions import MD5UnavailableError
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/exceptions.py", line 15, in <module>
+    from botocore.vendored import requests
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/__init__.py", line 58, in <module>
+    from . import utils
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/utils.py", line 26, in <module>
+    from .compat import parse_http_list as _parse_list_header
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/compat.py", line 7, in <module>
+    from .packages import chardet
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/packages/__init__.py", line 3, in <module>
+    from . import urllib3
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/packages/urllib3/__init__.py", line 10, in <module>
+    from .connectionpool import (
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/packages/urllib3/connectionpool.py", line 38, in <module>
+    from .response import HTTPResponse
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/packages/urllib3/response.py", line 9, in <module>
+    from ._collections import HTTPHeaderDict
+  File "/opt/tb-venv/lib/python3.10/site-packages/botocore/vendored/requests/packages/urllib3/_collections.py", line 1, in <module>
+    from collections import Mapping, MutableMapping
+ImportError: cannot import name 'Mapping' from 'collections' (/usr/lib/python3.10/collections/__init__.py)
+================================================================================
+INFO: Found 1 test target...
+Target //tensorboard/summary/writer:event_file_writer_s3_test up-to-date:
+  bazel-bin/tensorboard/summary/writer/event_file_writer_s3_test
+INFO: Elapsed time: 0.646s, Critical Path: 0.32s
+INFO: 6 processes: 4 internal, 2 processwrapper-sandbox.
+INFO: Build completed, 1 test FAILED, 6 total actions
+//tensorboard/summary/writer:event_file_writer_s3_test                   FAILED in 0.2s
+  /root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/testlogs/tensorboard/summary/writer/event_file_writer_s3_test/test.log
+
+Executed 1 out of 1 test: 1 fails locally.
+root@0e581c8e7a98:/workspace/tensorboard# bazel test //tensorboard/compat/tensorflow_stub:gfile_fsspec_test
+INFO: Analyzed target //tensorboard/compat/tensorflow_stub:gfile_fsspec_test (0 packages loaded, 2 targets configured).
+INFO: Found 1 test target...
+Target //tensorboard/compat/tensorflow_stub:gfile_fsspec_test up-to-date:
+  bazel-bin/tensorboard/compat/tensorflow_stub/gfile_fsspec_test
+INFO: Elapsed time: 1.009s, Critical Path: 0.74s
+INFO: 2 processes: 1 internal, 1 processwrapper-sandbox.
+INFO: Build completed successfully, 2 total actions
+//tensorboard/compat/tensorflow_stub:gfile_fsspec_test                   PASSED in 0.7s
+
+Executed 1 out of 1 test: 1 test passes.
+root@0e581c8e7a98:/workspace/tensorboard# bazel test //tensorboard/summary/writer:event_file_writer_fsspec_test
+INFO: Analyzed target //tensorboard/summary/writer:event_file_writer_fsspec_test (0 packages loaded, 2 targets configured).
+INFO: Found 1 test target...
+Target //tensorboard/summary/writer:event_file_writer_fsspec_test up-to-date:
+  bazel-bin/tensorboard/summary/writer/event_file_writer_fsspec_test
+INFO: Elapsed time: 6.978s, Critical Path: 6.73s
+INFO: 2 processes: 1 internal, 1 processwrapper-sandbox.
+INFO: Build completed successfully, 2 total actions
+//tensorboard/summary/writer:event_file_writer_fsspec_test               PASSED in 6.7s

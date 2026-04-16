@@ -49,70 +49,11 @@ bazel run //tensorboard/pip_package:test_pip_package -- \
 bazel test //tensorboard/... --test_output=errors
 bazel test //tensorboard/... --test_output=errors | tee /tmp/tb_bazel_test_all_latest.log
 
-bazel run //tensorboard/data/server:update_protos
-bazel test //tensorboard/data/server:update_protos_test --test_output=errors
-
 # Build and install pip package locally
 bazel build //tensorboard/pip_package:build_pip_package && \
     mkdir -p /tmp/tb_wheel && \
     ./bazel-bin/tensorboard/pip_package/build_pip_package /tmp/tb_wheel && \
     pip install /tmp/tb_wheel/tensorboard-*.whl
-
-# Test TB import
-cd ..
-python - <<'PY'
-from tensorboard.summary.writer.event_file_writer import EventFileWriter
-from tensorboard.compat.proto.event_pb2 import Event
-from tensorboard.compat.proto.summary_pb2 import Summary
-import time
-
-writer = EventFileWriter("logs/test_run")
-
-for step in range(5):
-    summary = Summary(value=[
-        Summary.Value(tag="loss", simple_value=step * 0.5)
-    ])
-    event = Event(wall_time=time.time(), step=step, summary=summary)
-    writer.add_event(event)
-
-writer.close()
-print("TensorBoard write test OK")
-PY
-
-bazel test --test_output=errors \
-//tensorboard/plugins/text:summary_test \
-//tensorboard/plugins/scalar:summary_test \
-//tensorboard/plugins/scalar:scalars_plugin_test \
-//tensorboard/plugins/scalar:scalars_plugin_notf_test \
-//tensorboard/plugins/projector/vz_projector:vz_projector_test_chromium-local \
-//tensorboard/plugins/projector:projector_plugin_test \
-//tensorboard/plugins/projector:projector_plugin_notf_test \
-//tensorboard/backend/event_processing:reservoir_test \
-//tensorboard/compat/tensorflow_stub:gfile_test \
-//tensorboard/data:grpc_provider_test \
-//tensorboard:manager_e2e_test
-
-bazel test --test_output=errors \
-//tensorboard/summary/writer:event_file_writer_test \
-//tensorboard/uploader:logdir_loader_test \
-//tensorboard/util:lazy_tensor_creator_test \
-//tensorboard/webapp:karma_test_chromium-local \
-//tensorboard/webapp/feature_flag:karma_test_chromium-local \
-//tensorboard/webapp/hparams:karma_test_chromium-local \
-//tensorboard/webapp/notification_center:notification_center_test_chromium-local \
-//tensorboard/webapp/persistent_settings:karma_test_chromium-local \
-//tensorboard/webapp/settings:karma_test_chromium-local \
-//tensorboard:manager_e2e_test
-
-bazel test //tensorboard/compat:compat_test --test_output=errors
-bazel test //tensorboard:program_test --test_output=errors
-bazel test //tensorboard:manager_e2e_test --test_output=errors
-bazel test --test_output=errors \
-  //tensorboard/backend/event_processing:io_wrapper_test \
-  //tensorboard/backend/event_processing:event_multiplexer_test \
-  //tensorboard/summary/writer:event_file_writer_test \
-  //tensorboard/plugins/scalar:scalars_plugin_test \
-  //tensorboard/plugins/text:text_plugin_test
 
 docker cp 023a0c78d10e:/tmp/tb_bazel_test_all_fresh.log .
 
@@ -129,10 +70,13 @@ pip install --force-reinstall "urllib3==1.26.20" "six>=1.12,<2"
 
 bazel shutdown
 bazel clean --expunge
-bazel run //tensorboard/data/server:update_protos
-bazel test //tensorboard/compat:compat_test --test_output=errors --cache_test_results=no
 bazel test //tensorboard/... --test_output=errors --keep_going --cache_test_results=no | tee /tmp/tb_bazel_test_all_latest.log
 
+
+bazel test //tensorboard/compat/tensorflow_stub:gfile_s3_test
+bazel test //tensorboard/summary/writer:event_file_writer_s3_test
+bazel test //tensorboard/compat/tensorflow_stub:gfile_fsspec_test
+bazel test //tensorboard/summary/writer:event_file_writer_fsspec_test
 
 ##################################
 
@@ -141,6 +85,12 @@ pip install tf-nightly
 pip install \
   -r ./tensorboard/pip_package/requirements.txt \
   -r ./tensorboard/pip_package/requirements_dev.txt
+pip uninstall -y tensorboard tb-nightly || true
+
+# Keep checked-in Rust proto artifacts in sync for local full-suite runs.
+# This is useful as a bootstrap step locally, but CI should keep
+# `update_protos_test` as a freshness check rather than auto-fixing it.
+bazel run //tensorboard/data/server:update_protos
 
 export pythonLocation=/opt/tb-venv
 py_abi=python3.10
@@ -163,6 +113,9 @@ pip install \
   -r ./tensorboard/pip_package/requirements.txt \
   -r ./tensorboard/pip_package/requirements_dev.txt
 
+# Keep checked-in Rust proto artifacts in sync for local full-suite runs.
+bazel run //tensorboard/data/server:update_protos
+
 export pythonLocation=/opt/tb-venv
 py_abi=python3.10
 mkdir -p "${pythonLocation}/include"
@@ -177,4 +130,67 @@ bazel fetch //tensorboard/...
 bazel test //tensorboard/... --test_tag_filters="support_notf" --test_output=errors --keep_going --cache_test_results=no
 bazel run //tensorboard/pip_package:test_pip_package -- --tf-version notf
 
+
+#####################
+# Container validation checklist before pushing CI-related changes
+
+# 1) Start from a fresh clone in the container
+git -c core.autocrlf=false clone https://github.com/psamanoelton/tensorboard.git --branch protobuf /workspace/tensorboard
+cd /workspace/tensorboard
+git status
+git rev-parse HEAD
+
+# 2) Install Bazel-side Python deps
+python -m pip install -U pip
+pip install \
+  -r ./tensorboard/pip_package/requirements.txt \
+  -r ./tensorboard/pip_package/requirements_dev.txt
+
+# 3) TF lane only: install TensorFlow and remove any installed TensorBoard wheel
+pip install tf-nightly
+pip uninstall -y tensorboard tb-nightly || true
+
+# 4) Keep generated Rust proto artifact in sync for local validation
+bazel run //tensorboard/data/server:update_protos
+
+# 5) Ensure Python headers are where Bazel's system_python repo expects them
+export pythonLocation=/opt/tb-venv
+py_abi=python3.10
+mkdir -p "${pythonLocation}/include"
+if [ ! -f "${pythonLocation}/include/${py_abi}/Python.h" ]; then
+  rm -rf "${pythonLocation}/include/${py_abi}"
+  ln -s "/usr/include/${py_abi}" "${pythonLocation}/include/${py_abi}"
+fi
+test -f "${pythonLocation}/include/${py_abi}/Python.h"
+
+# 6) Fast failure checks for the current CI blocker surface
+bazel shutdown
+bazel clean --expunge
+bazel fetch //tensorboard/...
+bazel build //tensorboard/... --nobuild
+
+# 7) Full TF validation path
+( set -o pipefail; bazel build //tensorboard/... |& grep -v 'external/com_google_protobuf/python: warning: directory' |& grep -v 'INFO: From ProtoCompile ' )
+bazel test //tensorboard/... --test_output=errors --keep_going --cache_test_results=no
+bazel build //tensorboard/pip_package:test_pip_package
+./bazel-bin/tensorboard/pip_package/test_pip_package --tf-version tf-nightly
+bazel test //tensorboard/compat/tensorflow_stub:gfile_s3_test
+bazel test //tensorboard/summary/writer:event_file_writer_s3_test
+bazel test //tensorboard/compat/tensorflow_stub:gfile_fsspec_test
+bazel test //tensorboard/summary/writer:event_file_writer_fsspec_test
+
+# 8) Non-TF validation path
+python -m pip install -U pip
+pip install \
+  -r ./tensorboard/pip_package/requirements.txt \
+  -r ./tensorboard/pip_package/requirements_dev.txt
+bazel shutdown
+bazel clean --expunge
+bazel fetch //tensorboard/...
+( set -o pipefail; bazel build //tensorboard/... |& grep -v 'external/com_google_protobuf/python: warning: directory' |& grep -v 'INFO: From ProtoCompile ' )
+bazel test //tensorboard/... --test_tag_filters="support_notf" --test_output=errors --keep_going --cache_test_results=no
+bazel build //tensorboard/pip_package:test_pip_package
+./bazel-bin/tensorboard/pip_package/test_pip_package --tf-version notf
+bazel test //tensorboard/compat/tensorflow_stub:gfile_fsspec_test
+bazel test //tensorboard/summary/writer:event_file_writer_fsspec_test
 

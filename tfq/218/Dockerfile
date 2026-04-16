@@ -53,19 +53,19 @@ WORKDIR /workspace
 # --------------------------------------------------------------------
 # Clone + build + install TFQ (your branch) inside the tfq env
 # --------------------------------------------------------------------
-RUN git clone https://github.com/psamanoelton/quantum.git && \
-    cd quantum && \
-    git checkout feature/tf218_support && \
-    source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tfq && \
-    pip install --no-cache-dir -r requirements.txt && \
-    ./configure.sh --python="$(which python)" && \
-    bazel clean --expunge && \
-    bazel build -c opt \
-      --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
-      --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
-      release:build_pip_package && \
-    bazel-bin/release/build_pip_package /tmp/tfquantum && \
-    pip install --no-cache-dir /tmp/tfquantum/*.whl
+# RUN git clone https://github.com/psamanoelton/quantum.git && \
+#     cd quantum && \
+#     git checkout feature/tf218_support && \
+#     source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tfq && \
+#     pip install --no-cache-dir -r requirements.txt && \
+#     ./configure.sh --python="$(which python)" && \
+#     bazel clean --expunge && \
+#     bazel build -c opt \
+#       --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
+#       --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
+#       release:build_pip_package && \
+#     bazel-bin/release/build_pip_package /tmp/tfquantum && \
+#     pip install --no-cache-dir /tmp/tfquantum/*.whl
 
 # --------------------------------------------------------------------
 # Quick runtime check (fail-fast during build)
@@ -224,20 +224,20 @@ RUN git clone https://github.com/psamanoelton/quantum.git && \
 # conda activate tfq
 # cd quantum
 
-git clone https://github.com/psamanoelton/quantum.git && \
-    cd quantum && \
-    git checkout feature/tf218_support && \
-    pip install --no-cache-dir -r requirements.txt && \
-    ./configure.sh --python="$(which python)" && \
-    bazel clean --expunge && \
-    bazel build -c opt \
-      --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
-      --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
-      release:build_pip_package && \
-    bazel-bin/release/build_pip_package /tmp/tfquantum && \
-    pip install --no-cache-dir /tmp/tfquantum/*.whl
-./scripts/test_all.sh
-./scripts/ci_validate_tutorials.sh
+# git clone https://github.com/psamanoelton/quantum.git && \
+#     cd quantum && \
+#     git checkout feature/tf218_support && \
+#     pip install --no-cache-dir -r requirements.txt && \
+#     ./configure.sh --python="$(which python)" && \
+#     bazel clean --expunge && \
+#     bazel build -c opt \
+#       --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
+#       --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
+#       release:build_pip_package && \
+#     bazel-bin/release/build_pip_package /tmp/tfquantum && \
+#     pip install --no-cache-dir /tmp/tfquantum/*.whl
+# ./scripts/test_all.sh
+# ./scripts/ci_validate_tutorials.sh
 
 # rm scripts/test_tutorials.py
 # docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\scripts\test_tutorials.py" f719201a63fb:/workspace/quantum/scripts/test_tutorials.py
@@ -289,26 +289,17 @@ git clone https://github.com/psamanoelton/quantum.git && \
 
 
 # 3.11
-conda activate base
-conda create --name tfq311 python=3.11 -y
-conda activate tfq311
-bazel clean --expunge
-rm -rf /tmp/tfquantum
+# conda activate base
+# conda create --name tfq311 python=3.11 -y
+# conda activate tfq311
+# bazel clean --expunge
+# rm -rf /tmp/tfquantum
 
 # 3.12
-conda activate base
-conda create --name tfq312 python=3.12 -y
-conda activate tfq312
-bazel clean --expunge
-rm -rf /tmp/tfquantum
+# conda activate base
+# conda create --name tfq312 python=3.12 -y
+# conda activate tfq312
+# bazel clean --expunge
+# rm -rf /tmp/tfquantum
 
-# 2-3 Goals
-
-# Learning goals can be 1 single goal
-
-
-# Project Delivery Goals (Client Tools)
-
-# Productivity 20-30 questions to help me to fillout this section
-# Fill out this section
 
