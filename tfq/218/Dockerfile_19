@@ -1,0 +1,294 @@
+FROM ubuntu:22.04
+
+SHELL ["/bin/bash", "-lc"]
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV PIP_ROOT_USER_ACTION=ignore
+ENV TF_USE_LEGACY_KERAS=1
+ENV VIRTUAL_ENV=/opt/tfqenv
+ENV PATH=/opt/tfqenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Match the GH build workflow baseline as closely as practical for local runs:
+# Ubuntu 22.04, JDK 17, Python 3.10, and tools needed by scripts/ci_install.sh.
+# Docker Desktop occasionally hits transient Ubuntu mirror/network failures, so
+# retry the apt phase instead of failing the whole image build on the first hit.
+RUN set -eux; \
+    sed -i 's|http://archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' /etc/apt/sources.list; \
+    sed -i 's|http://security.ubuntu.com/ubuntu|https://security.ubuntu.com/ubuntu|g' /etc/apt/sources.list; \
+    echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries; \
+    echo 'Acquire::http::Timeout "30";' >> /etc/apt/apt.conf.d/80-retries; \
+    echo 'Acquire::https::Timeout "30";' >> /etc/apt/apt.conf.d/80-retries; \
+    echo 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/80-retries; \
+    echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99bootstrap-https; \
+    echo 'Acquire::https::Verify-Host "false";' >> /etc/apt/apt.conf.d/99bootstrap-https; \
+    for attempt in 1 2 3; do \
+      rm -rf /var/lib/apt/lists/* && \
+      apt-get update -o APT::Update::Error-Mode=any && \
+      apt-get install -y --no-install-recommends \
+        build-essential \
+        ca-certificates \
+        clang \
+        curl \
+        git \
+        lld \
+        lsb-release \
+        openjdk-17-jdk \
+        python3.10 \
+        python3-pip \
+        python3.10-venv \
+        sudo \
+        unzip \
+        wget \
+        zip && \
+      rm -f /etc/apt/apt.conf.d/99bootstrap-https && \
+      rm -rf /var/lib/apt/lists/* && \
+      break; \
+      echo "apt install attempt ${attempt} failed; retrying..." >&2; \
+      rm -rf /var/lib/apt/lists/*; \
+      sleep 15; \
+      if [ "${attempt}" = "3" ]; then \
+        exit 1; \
+      fi; \
+    done
+
+RUN python3.10 -m venv "${VIRTUAL_ENV}" \
+ && python -m pip install --upgrade pip setuptools wheel
+
+# Provide Bazel locally for ad hoc runs of scripts like
+# scripts/build_pip_package_test.sh. CI still installs Bazel explicitly via
+# scripts/ci_install.sh, but having Bazelisk preinstalled makes the container
+# much easier to use interactively.
+RUN curl -fsSL https://github.com/bazelbuild/bazelisk/releases/download/v1.22.0/bazelisk-linux-amd64 \
+      -o /usr/local/bin/bazelisk \
+ && chmod +x /usr/local/bin/bazelisk \
+ && ln -sf /usr/local/bin/bazelisk /usr/local/bin/bazel
+
+WORKDIR /workspace
+
+CMD ["/bin/bash"]
+
+# docker build -t tfq-ci-build .
+# docker run -it tfq-ci-build
+# docker run -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p":/workspace/quantum tfq-tf:18
+
+
+# --------------------------------------------------------------------
+# Clone + build + install TFQ (your branch) inside the tfq env
+# --------------------------------------------------------------------
+# RUN git clone https://github.com/psamanoelton/quantum.git && \
+#     cd quantum && \
+#     git checkout feature/tf218_support && \
+#     source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tfq && \
+#     pip install --no-cache-dir -r requirements.txt && \
+#     ./configure.sh --python="$(which python)" && \
+#     bazel clean --expunge && \
+#     bazel build -c opt \
+#       --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
+#       --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
+#       release:build_pip_package && \
+#     bazel-bin/release/build_pip_package /tmp/tfquantum && \
+#     pip install --no-cache-dir /tmp/tfquantum/*.whl
+
+# --------------------------------------------------------------------
+# Quick runtime check (fail-fast during build)
+# --------------------------------------------------------------------
+# RUN source ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate tfq && \
+# python - <<'PY'
+# import tensorflow as tf, tensorflow_quantum as tfq, tf_keras as k2, cirq, numpy as np, sympy
+# print("TF:", tf.__version__)
+# print("TFQ:", tfq.__version__)
+# print("tf-keras:", k2.__version__)
+# print("Cirq:", cirq.__version__)
+# print("NumPy:", np.__version__)
+# print("Sympy:", sympy.__version__)
+# PY
+
+# CMD ["/bin/bash"]
+
+# ### END DOCKERFILE ###`
+
+# sed -i 's/\r$//' release/build_pip_package.sh scripts/*.sh configure.sh || true
+
+# docker exec -it 2c1aa22ae7ab /bin/bash
+
+# docker system prune -a -f
+
+
+# # source .venv/bin/activate
+
+# # pip install -r requirements.txt
+# # ./configure.sh
+# # ./configure.sh --python="$ABS_PY"
+# # bazel build -c opt --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" release:build_pip_package
+# # bazel-bin/release/build_pip_package /tmp/tfquantum/
+# # python3 -m pip install /tmp/tfquantum/name_of_generated_wheel.whl
+
+# # # $src = "C:\Users\Pablo Samano\Desktop\Rivian\google"   # change to your path
+# # # docker run --rm -it --name tfqq --mount type=bind,source="$src",target=/workspace tfqn /bin/bash
+
+# # docker run --rm -it --name tfq -v "C:\Users\Pablo Samano\Desktop\Rivian\google":/workspace tfq-tf216:latest
+
+# docker run --rm -it --name tfqn -v "C:\Users\Pablo Samano\Desktop\Rivian\google":/workspace tfq-tf216:latest
+
+
+# # docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum\WORKSPACE" f248539d39fd:/workspace/quantum
+# # docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum" a05debad652a:/workspace
+
+# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p\release\build_pip_package.sh" ea2ae16ac6f4:/workspace/quantum/bazel-bin/release/
+
+
+# ### END 2 END ###
+# # choose your env
+# python3.11 -m venv .venv && . .venv/bin/activate
+# pip install -U pip
+# pip install tensorflow==2.16.2 tf-keras==2.16.0 numpy==1.26.4 \
+#             sympy==1.14.0 protobuf>=4.25,<5 cirq-core==1.3.* cirq-google==1.3.*
+
+# # reconfigure with your venv python
+# ./configure.sh --python="$(pwd)/.venv/bin/python"
+
+# # make sure Windows line-endings didn’t sneak in
+# sed -i 's/\r$//' release/build_pip_package.sh scripts/*.sh configure.sh || true
+# chmod +x release/build_pip_package.sh scripts/*.sh configure.sh
+
+# # clean & build
+# bazel clean --expunge
+# bazel build -c opt \
+#   --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
+#   --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
+#   release:build_pip_package
+
+# # build the wheel with the same interpreter (thanks to our build_pip_package.sh patch)
+# bazel-bin/release/build_pip_package /tmp/tfquantum
+
+# pip install /tmp/tfquantum/*.whl
+
+# # sanity
+# python - <<'PY'
+# import tensorflow as tf, tensorflow_quantum as tfq, tf_keras as k2, cirq, numpy as np, sympy
+# print("TF:", tf.__version__)
+# print("TFQ:", tfq.__version__)
+# print("tf-keras:", k2.__version__)
+# print("Cirq:", cirq.__version__)
+# print("NumPy:", np.__version__)
+# print("Sympy:", sympy.__version__)
+# PY
+
+# ###
+
+
+
+
+
+# # sed -i 's/\r$//' bazel-bin/release/build_pip_package
+# # bazel-bin/release/build_pip_package /tmp/tfquantum
+# # sed -i 's/\bpython3\b/python3.11/g' bazel-bin/release/build_pip_package
+# # bazel-bin/release/build_pip_package /tmp/tfquantum
+# # pip install /tmp/tfquantum/*.whl
+
+# cd /workspace
+# python3.11 - <<'PY'
+# import tensorflow as tf, tensorflow_quantum as tfq, cirq, numpy as np, google.protobuf as gp, sympy
+# print("TF:", tf.__version__)
+# print("TFQ:", tfq.__version__)
+# print("Cirq:", cirq.__version__)
+# print("NumPy:", np.__version__)
+# print("Protobuf:", gp.__version__)
+# print("sympy:", sympy.__version__)
+# print("tfq from:", tfq.__file__)
+# PY
+
+# # sed -i 's/\r$//' scripts/test_all.sh
+# # ./scripts/test_all.sh
+
+# git clone https://github.com/psamanoelton/quantum.git
+# cd quantum
+# git checkout feature/tf216_support
+
+# conda activate tfq
+
+# pip install -r requirements.txt
+
+# ./configure.sh --python="$(which python3.11)"
+# bazel clean --expunge
+# bazel build -c opt \
+#   --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
+#   --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
+#   release:build_pip_package
+
+# bazel-bin/release/build_pip_package /tmp/tfquantum
+# pip install /tmp/tfquantum/*.whl
+
+############ TODO ############
+
+# This will be needed when TFQ 2.20 is released
+
+# Fix pip package to properly use TFQ with pip install
+# Fix Google Colab TFQ install (enable TFQ in Google Colab)
+# Update Devsite
+# Update README
+# Update TFQ Install instructions / Provide same steps as TF Install instructions
+
+# ############ TODO ############
+# cd ..
+# python - <<'PY'
+# import tensorflow as tf, tensorflow_quantum as tfq, tf_keras as k2, cirq, numpy as np, sympy
+# print("TF:", tf.__version__)
+# print("TFQ:", tfq.__version__)
+# print("tf-keras:", k2.__version__)
+# print("Cirq:", cirq.__version__)
+# print("NumPy:", np.__version__)
+# print("Sympy:", sympy.__version__)
+# PY
+
+# conda activate tfq
+# cd quantum
+
+# git clone https://github.com/psamanoelton/quantum.git && \
+#     cd quantum && \
+#     pip install --no-cache-dir -r requirements.txt && \
+#     ./configure.sh --python="$(which python)" && \
+#     bazel clean --expunge && \
+#     bazel build -c opt \
+#       --cxxopt="-O3" --cxxopt="-march=native" --cxxopt="-std=c++17" \
+#       --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=1" --linkopt="-fuse-ld=lld" \
+#       release:build_pip_package && \
+#     bazel-bin/release/build_pip_package /tmp/tfquantum && \
+#     pip install --no-cache-dir /tmp/tfquantum/*.whl
+# ./scripts/test_all.sh
+# ./scripts/ci_validate_tutorials.sh
+
+
+# python -m yapf --style=google -i ^
+#   release\setup.py scripts\test_tutorials.py tensorflow_quantum\__init__.py
+
+# pip install pip-tools
+# pip-compile --upgrade --generate-hashes -o requirements.txt requirements.in
+
+
+# docker cp "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum" 2c1aa22ae7ab:/workspace/quantum
+
+#### Conda refresh env ###
+
+# conda activate base
+# conda env remove --name tfq -y
+# conda create --name tfq python=3.10 -y
+# conda activate tfq
+
+
+# 3.11
+# conda activate base
+# conda create --name tfq311 python=3.11 -y
+# conda activate tfq311
+# bazel clean --expunge
+# rm -rf /tmp/tfquantum
+
+# 3.12
+# conda activate base
+# conda create --name tfq312 python=3.12 -y
+# conda activate tfq312
+# bazel clean --expunge
+# rm -rf /tmp/tfquantum

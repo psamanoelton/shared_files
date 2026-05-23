@@ -1,0 +1,43 @@
+Configuration values detected:
+  PYTHON_BIN_PATH=/opt/tfqenv/bin/python3
+  TF_HEADER_DIR=/opt/tfqenv/lib/python3.10/site-packages/tensorflow/include
+  TF_SHARED_LIBRARY_DIR=/opt/tfqenv/lib/python3.10/site-packages/tensorflow
+  TF_SHARED_LIBRARY_NAME=libtensorflow_framework.so.2
+
+Created third_party/python_legacy.
+Python interpreter = /opt/tfqenv/bin/python3
+Wrote .tf_configure.bazelrc and .bazelrc successfully.
+ (specified in /workspace/quantum_p/.bazelversion), but it wasn't found in /usr/bin.
+
+You can install the required Bazel version via apt:
+  sudo apt update && sudo apt install bazel-6.5.0
+
+If this doesn't work, check Bazel's installation instructions for help:
+  https://bazel.build/install/ubuntu
+rm: cannot remove '/tmp/tensorflow_quantum/*': No such file or directory
+ok
+./scripts/build_pip_package_test.sh: line 24: bazel-bin/release/build_pip_package: No such file or directory
+WARNING: Requirement '/tmp/tensorflow_quantum/*.whl' looks like a filename, but the file does not exist
+ERROR: Invalid wheel filename (wrong number of parts): '*'
+root@39901ab4d2d1:/workspace/quantum_p# curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-amd64 \
+>       -o /usr/local/bin/bazel && chmod +x /usr/local/bin/bazel
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 5248k  100 5248k    0     0  6568k      0 --:--:-- --:--:-- --:--:-- 16.3M
+root@39901ab4d2d1:/workspace/quantum_p# bazel --version
+ (specified in /workspace/quantum_p/.bazelversion), but it wasn't found in /usr/bin.
+
+You can install the required Bazel version via apt:
+  sudo apt update && sudo apt install bazel-6.5.0
+
+If this doesn't work, check Bazel's installation instructions for help:
+  https://bazel.build/install/ubuntu
+root@39901ab4d2d1:/workspace/quantum_p# bazel --help
+ (specified in /workspace/quantum_p/.bazelversion), but it wasn't found in /usr/bin.
+
+You can install the required Bazel version via apt:
+  sudo apt update && sudo apt install bazel-6.5.0
+
+If this doesn't work, check Bazel's installation instructions for help:
+  https://bazel.build/install/ubuntu

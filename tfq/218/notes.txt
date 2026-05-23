@@ -1,0 +1,237 @@
+Local CI reproduction notes for TFQ TF 2.19.1
+==============================================
+
+Goal
+----
+Run local checks as close as practical to:
+- `.github/workflows/ci-build-checks.yaml`
+- `.github/workflows/ci-file-checks.yaml`
+
+Notes
+-----
+- The local Dockerfile in this folder is tuned for the build/test workflow:
+  Ubuntu 22.04 + Python 3.10 + JDK 17.
+- The file-check workflow mixes Ubuntu 22.04 and Ubuntu 24.04 jobs.
+  For that reason, use the local Dockerfile for Python lint/format checks,
+  and a temporary Ubuntu 24.04 container for `clang-format-18` and `yamllint`.
+- For the closest CI match, run each job in a fresh container.
+- The commands below assume PowerShell on Windows and the repo checkout at:
+  `C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p`
+
+
+1) Build the local CI image for build/test jobs
+-----------------------------------------------
+
+PowerShell:
+
+```powershell
+cd C:\Users\Pablo Samano\Desktop\Rivian\google
+docker build -f shared_files/tfq/218/Dockerfile -t tfq-ci-build shared_files/tfq/218
+```
+
+
+2) Reproduce `ci-build-checks.yaml`
+-----------------------------------
+
+2.1 Wheel test job
+------------------
+
+Start a fresh container:
+
+```powershell
+docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p:/workspace/quantum" tfq-ci-build
+```
+
+Inside the container:
+
+```bash
+git config --global --add safe.directory /workspace/quantum
+cd /workspace/quantum
+sed -i 's/\r$//' configure.sh release/build_pip_package.sh scripts/*.sh || true
+
+./scripts/ci_install.sh
+
+python --version
+bazel --version
+
+./scripts/build_pip_package_test.sh
+./scripts/run_example.sh
+```
+
+
+2.2 Library tests job
+---------------------
+
+Start a fresh container:
+
+```powershell
+docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p:/workspace/quantum" tfq-ci-build
+```
+
+Inside the container:
+
+```bash
+git config --global --add safe.directory /workspace/quantum
+cd /workspace/quantum
+sed -i 's/\r$//' configure.sh release/build_pip_package.sh scripts/*.sh || true
+
+./scripts/ci_install.sh
+printf 'Y\n' | ./configure.sh --python="$(which python)"
+
+./scripts/test_all.sh
+```
+
+
+2.3 Tutorial tests job
+----------------------
+
+Start a fresh container:
+
+```powershell
+docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p:/workspace/quantum" tfq-ci-build
+```
+
+Inside the container:
+
+```bash
+git config --global --add safe.directory /workspace/quantum
+cd /workspace/quantum
+sed -i 's/\r$//' configure.sh release/build_pip_package.sh scripts/*.sh || true
+
+./scripts/ci_install.sh
+pip install --upgrade pip seaborn==0.10.0
+
+./scripts/build_pip_package_test.sh
+./scripts/ci_validate_tutorials.sh
+```
+
+
+3) Reproduce `ci-file-checks.yaml`
+----------------------------------
+
+The GitHub workflow only checks changed files.
+These commands use:
+
+```bash
+git diff --name-only --diff-filter=AM origin/master...HEAD
+```
+
+If your base branch is not `origin/master`, replace it accordingly.
+
+
+3.1 Python lint and format checks
+---------------------------------
+
+Use the same local Ubuntu 22.04 image:
+
+```powershell
+docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p:/workspace/quantum" tfq-ci-build
+```
+
+Inside the container:
+
+```bash
+git config --global --add safe.directory /workspace/quantum
+cd /workspace/quantum
+sed -i 's/\r$//' configure.sh release/build_pip_package.sh scripts/*.sh || true
+
+./scripts/ci_install.sh
+git fetch origin master
+
+CHANGED_PY="$(git diff --name-only --diff-filter=AM origin/master...HEAD -- '*.py')"
+printf 'Changed Python files:\n%s\n' "${CHANGED_PY}"
+
+if [[ -n "${CHANGED_PY}" ]]; then
+  pylint -v ${CHANGED_PY}
+  yapf --parallel --diff --style=google ${CHANGED_PY}
+else
+  echo "No changed Python files."
+fi
+```
+
+
+3.2 C++ / Protobuf format check
+-------------------------------
+
+Use Ubuntu 24.04 to match the GitHub runner that provides `clang-format-18`:
+
+```powershell
+docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p:/workspace/quantum" ubuntu:24.04 bash
+```
+
+Inside the container:
+
+```bash
+apt-get update
+apt-get install -y git clang-format-18
+
+git config --global --add safe.directory /workspace/quantum
+cd /workspace/quantum
+git fetch origin master
+
+CHANGED_CC="$(git diff --name-only --diff-filter=AM origin/master...HEAD -- '*.cc' '*.h' '*.proto')"
+printf 'Changed C++ / proto files:\n%s\n' "${CHANGED_CC}"
+
+if [[ -n "${CHANGED_CC}" ]]; then
+  clang-format-18 --verbose -Werror --style google --dry-run ${CHANGED_CC}
+else
+  echo "No changed C++ / proto files."
+fi
+```
+
+
+3.3 YAML lint
+-------------
+
+Use Ubuntu 24.04 like the GitHub workflow:
+
+```powershell
+docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p:/workspace/quantum" ubuntu:24.04 bash
+```
+
+Inside the container:
+
+```bash
+apt-get update
+apt-get install -y git yamllint
+
+git config --global --add safe.directory /workspace/quantum
+cd /workspace/quantum
+git fetch origin master
+
+CHANGED_YAML="$(git diff --name-only --diff-filter=AM origin/master...HEAD -- '*.yaml' '*.yml')"
+printf 'Changed YAML files:\n%s\n' "${CHANGED_YAML}"
+
+if [[ -n "${CHANGED_YAML}" ]]; then
+  yamllint --format github ${CHANGED_YAML}
+else
+  echo "No changed YAML files."
+fi
+```
+
+
+4) Optional all-in-one manual verification
+------------------------------------------
+
+If you want one broader local pass after the CI-like jobs:
+
+```powershell
+docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p:/workspace/quantum" tfq-ci-build
+```
+
+Inside the container:
+
+```bash
+git config --global --add safe.directory /workspace/quantum
+cd /workspace/quantum
+sed -i 's/\r$//' configure.sh release/build_pip_package.sh scripts/*.sh || true
+
+./scripts/ci_install.sh
+printf 'Y\n' | ./configure.sh --python="$(which python)"
+
+bazel clean --expunge
+./scripts/build_pip_package_test.sh
+./scripts/run_example.sh
+./scripts/test_all.sh
+./scripts/ci_validate_tutorials.sh
+```

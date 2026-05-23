@@ -1,4 +1,4 @@
-git clone https://github.com/psamanoelton/tensorboard.git --branch protobuf
+git clone https://github.com/psamanoelton/tensorboard.git --branch update_ci
 cd tensorboard
 git log -1
 
@@ -178,4 +178,76 @@ bazel build //tensorboard/pip_package:test_pip_package
 ./bazel-bin/tensorboard/pip_package/test_pip_package --tf-version notf
 bazel test //tensorboard/compat/tensorflow_stub:gfile_fsspec_test
 bazel test //tensorboard/summary/writer:event_file_writer_fsspec_test
+
+
+
+
+
+docker cp 'C:\Users\Pablo Samano\Desktop\Rivian\google\tensorboard_p\tensorboard/plugins/audio/summary.py' 8bb263ed8539:/workspace/tensorboard/tensorboard/plugins/audio/summary.py
+docker cp 'C:\Users\Pablo Samano\Desktop\Rivian\google\tensorboard_p\tensorboard/plugins/histogram/summary.py' 8bb263ed8539:/workspace/tensorboard/tensorboard/plugins/histogram/summary.py
+docker cp 'C:\Users\Pablo Samano\Desktop\Rivian\google\tensorboard_p\tensorboard/plugins/image/summary.py' 8bb263ed8539:/workspace/tensorboard/tensorboard/plugins/image/summary.py
+docker cp 'C:\Users\Pablo Samano\Desktop\Rivian\google\tensorboard_p\tensorboard/plugins/scalar/summary.py' 8bb263ed8539:/workspace/tensorboard/tensorboard/plugins/scalar/summary.py
+docker cp 'C:\Users\Pablo Samano\Desktop\Rivian\google\tensorboard_p\tensorboard/plugins/text/summary.py' 8bb263ed8539:/workspace/tensorboard/tensorboard/plugins/text/summary.py
+
+
+docker cp 'C:\Users\Pablo Samano\Desktop\Rivian\google\tensorboard_p\tensorboard/summary\writer\BUILD' 8bb263ed8539:/workspace/tensorboard/tensorboard/summary/writer/BUILD.py
+
+
+rm /workspace/tensorboard/tensorboard/plugins/histogram/summary.py
+rm /workspace/tensorboard/tensorboard/plugins/image/summary.py
+rm /workspace/tensorboard/tensorboard/plugins/scalar/summary.py
+rm /workspace/tensorboard/tensorboard/plugins/text/summary.py
+rm /workspace/tensorboard/tensorboard/summary/writer/BUILD.py
+
+
+
+bazel test //tensorboard/compat:compat_test --test_output=errors
+bazel test //tensorboard/summary/writer:event_file_writer_test --test_output=errors
+bazel test //tensorboard/plugins/scalar:summary_test --test_output=errors
+bazel test //tensorboard/plugins/text:summary_test --test_output=errors
+bazel test //tensorboard/plugins/histogram:summary_test --test_output=errors
+bazel test //tensorboard/... --test_output=errors --keep_going --cache_test_results=no
+bazel build //tensorboard/pip_package:test_pip_package
+./bazel-bin/tensorboard/pip_package/test_pip_package --tf-version "tensorflow==2.21"
+
+docker cp 8bb263ed8539:/tmp/summary_tests.log .
+
+
+#################################################################################################################
+
+git clone https://github.com/psamanoelton/tensorboard.git --branch update_ci /workspace/tensorboard
+cd /workspace/tensorboard
+
+python3.10 -m venv /tmp/tb-build-venv
+source /tmp/tb-build-venv/bin/activate
+python -m pip install -U pip setuptools wheel virtualenv
+
+ci/download_bazel.sh "7.7.0" "fe7e799cbc9140f986b063e06800a3d4c790525075c877d00a7112669824acbf" ~/bazel
+mv ~/bazel /usr/local/bin/bazel
+chmod +x /usr/local/bin/bazel
+cp ./ci/bazelrc ~/.bazelrc
+
+python --version
+python - <<'PY'
+import pathlib, sys, sysconfig
+print("sys.executable =", sys.executable)
+include_dir = pathlib.Path(sysconfig.get_config_var("INCLUDEPY"))
+print("INCLUDEPY =", include_dir)
+print("Python.h exists =", (include_dir / "Python.h").exists())
+PY
+
+python -m pip install -U pip
+pip install tf-nightly
+pip uninstall -y tensorboard tb-nightly || true
+
+pip install \
+  -r ./tensorboard/pip_package/requirements.txt \
+  -r ./tensorboard/pip_package/requirements_dev.txt
+
+bazel fetch //tensorboard/...
+bazel build //tensorboard/...
+bazel test //tensorboard/...
+bazel build //tensorboard/pip_package:test_pip_package
+./bazel-bin/tensorboard/pip_package/test_pip_package --tf-version tf-nightly
+
 
