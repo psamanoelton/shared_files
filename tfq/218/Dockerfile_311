@@ -11,7 +11,7 @@ ENV TF_USE_LEGACY_KERAS=1
 ENV VIRTUAL_ENV=/opt/tfqenv
 ENV PATH=/opt/tfqenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-# Local TFQ helper image for Python 3.10 testing.
+# Local TFQ helper image for Python 3.11 testing.
 RUN set -eux; \
     sed -i 's|http://archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' /etc/apt/sources.list; \
     sed -i 's|http://security.ubuntu.com/ubuntu|https://security.ubuntu.com/ubuntu|g' /etc/apt/sources.list; \
@@ -30,19 +30,26 @@ RUN set -eux; \
         clang \
         curl \
         git \
+        gnupg \
         lld \
         lsb-release \
         openjdk-17-jdk \
         pkg-config \
         python3-pip \
-        python3.10 \
-        python3.10-dev \
-        python3.10-venv \
         sudo \
         unzip \
         wget \
         zlib1g-dev \
         zip && \
+      curl -fsSL 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF23C5A6CF475977595C89F51BA6932366A755776' | \
+        gpg --dearmor -o /usr/share/keyrings/deadsnakes.gpg && \
+      echo 'deb [signed-by=/usr/share/keyrings/deadsnakes.gpg] https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy main' \
+        > /etc/apt/sources.list.d/deadsnakes.list && \
+      apt-get update -o APT::Update::Error-Mode=any && \
+      apt-get install -y --no-install-recommends \
+        python3.11 \
+        python3.11-dev \
+        python3.11-venv && \
       rm -f /etc/apt/apt.conf.d/99bootstrap-https && \
       rm -rf /var/lib/apt/lists/* && \
       break; \
@@ -54,7 +61,7 @@ RUN set -eux; \
       fi; \
     done
 
-RUN python3.10 -m venv "${VIRTUAL_ENV}" \
+RUN python3.11 -m venv "${VIRTUAL_ENV}" \
  && python -m pip install --upgrade pip setuptools wheel
 
 RUN curl -fsSL https://github.com/bazelbuild/bazelisk/releases/download/v1.22.0/bazelisk-linux-amd64 \
@@ -67,13 +74,12 @@ WORKDIR /workspace
 CMD ["/bin/bash"]
 
 # Build:
-# docker build -t tfq-ci-py310 -f Dockerfile shared_files/tfq/218
+# docker build -t tfq-ci-py311 -f shared_files/tfq/218/Dockerfile_311 shared_files/tfq/218
 #
 # Run:
-# docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p":/workspace/quantum tfq-ci-py310
+# docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p":/workspace/quantum tfq-ci-py311
 #
 # Inside the container:
-#
 # cd /workspace/quantum
 # sed -i 's/\r$//' .bazelversion configure.sh release/build_pip_package.sh scripts/*.sh || true
 # REQ_FILE="$(./scripts/select_requirements_lock.sh --python=$(which python))"
@@ -88,28 +94,6 @@ CMD ["/bin/bash"]
 # mkdir -p /tmp/tfquantum
 # bazel-bin/release/build_pip_package /tmp/tfquantum
 # pip install --no-cache-dir /tmp/tfquantum/*.whl
-#
-# Quick runtime check:
-# cd /tmp
-# python - <<'PY'
-# import tensorflow as tf, tensorflow_quantum as tfq, tf_keras as k2, cirq, numpy as np, sympy
-# print("TF:", tf.__version__)
-# print("TFQ:", tfq.__version__)
-# print("tf-keras:", k2.__version__)
-# print("Cirq:", cirq.__version__)
-# print("NumPy:", np.__version__)
-# print("Sympy:", sympy.__version__)
-# PY
-#
-# Full validation:
 # cd /workspace/quantum
 # ./scripts/test_all.sh
 # ./scripts/ci_validate_tutorials.sh
-
-# docker build -t tfq-ci-py310 -f Dockerfile .
-# docker build -t tfq-ci-py311 -f Dockerfile_311 .
-# docker build -t tfq-ci-py312 -f Dockerfile_312 .
-
-# docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p":/workspace/quantum tfq-ci-py310
-# docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p":/workspace/quantum tfq-ci-py311
-# docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\quantum_p":/workspace/quantum tfq-ci-py312

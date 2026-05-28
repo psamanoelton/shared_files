@@ -3,8 +3,9 @@ cd tensorboard
 git log -1
 
 
-find /workspace/tensorboard -type f -exec dos2unix {} \;
+find3213213 /workspace/tensorboard -type f -exec dos2unix {} \;
 
+cd tensorboard
 # Install TB dependencies
 pip install "tensorflow==2.21.0"
 pip install \
@@ -66,6 +67,10 @@ bazel test //tensorboard/compat/tensorflow_stub:gfile_s3_test
 bazel test //tensorboard/summary/writer:event_file_writer_s3_test
 bazel test //tensorboard/compat/tensorflow_stub:gfile_fsspec_test
 bazel test //tensorboard/summary/writer:event_file_writer_fsspec_test
+
+bazel test //tensorboard/data/server:update_protos_test
+bazel test //tensorboard/plugins/debugger_v2:debugger_v2_plugin_test
+
 
 ##################################
 
@@ -212,6 +217,7 @@ bazel build //tensorboard/pip_package:test_pip_package
 
 docker cp 8bb263ed8539:/tmp/summary_tests.log .
 
+docker cp 2b01f9a66562:/root/.cache/bazel/_bazel_root/988f07a2de21c48fd6c1836c06aba219/execroot/org_tensorflow_tensorboard/bazel-out/k8-fastbuild/testlogs/tensorboard/plugins/debugger_v2/debugger_v2_plugin_test/test.log .
 
 #################################################################################################################
 

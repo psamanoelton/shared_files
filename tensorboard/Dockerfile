@@ -99,3 +99,6 @@ CMD ["/bin/bash"]
 # docker build -t tb-ci-py310 .
 # docker run -it tb-ci-py310
 # docker system prune -a -f
+
+# docker build -t tb-ci-py310 -f Dockerfile .
+# docker run --rm -it -v "C:\Users\Pablo Samano\Desktop\Rivian\google\tensorboard_p":/workspace/tensorboard tb-ci-py310
